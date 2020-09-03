@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_news"
-        android:icon="@drawable/ic_news_black_24dp"
+        android:icon="@drawable/ic_baseline_radio_24"
         android:title="@string/title_news" />
 
     <item
         android:id="@+id/navigation_data"
-        android:icon="@drawable/ic_data_black_24dp"
+        android:icon="@drawable/ic_baseline_remove_red_eye_24"
         android:title="@string/title_data" />
 
     <item
         android:id="@+id/navigation_graph"
-        android:icon="@drawable/ic_graph_black_24dp"
+        android:icon="@drawable/ic_baseline_policy_24"
         android:title="@string/title_graph" />
 
 </menu>
