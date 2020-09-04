@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.syscovid19.R;
@@ -19,12 +18,15 @@ public class DataFragment extends Fragment {
 
     private final String[] TITLES = new String[] {"国内疫情数据", "国外疫情数据"};
     private DataPagerAdapter pagerAdapter;
-    private DataViewModel dataViewModel;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pagerAdapter = new DataPagerAdapter(getChildFragmentManager());
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dataViewModel =
-                ViewModelProviders.of(this).get(DataViewModel.class);
         View root = inflater.inflate(R.layout.fragment_data, container, false);
         // Inflate the layout for this fragment
         ViewPager viewPager = (ViewPager) root.findViewById(R.id.view_pager);
@@ -35,7 +37,6 @@ public class DataFragment extends Fragment {
 
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
         return root;
     }
 
@@ -47,7 +48,12 @@ public class DataFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return DataSubFragment.newInstance(position);
+            return new DataSubFragment(new DomesticDataSubBackend());
+        }
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
         }
 
         @Override
