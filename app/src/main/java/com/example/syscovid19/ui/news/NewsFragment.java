@@ -1,35 +1,102 @@
 package com.example.syscovid19.ui.news;
 
+import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
+import com.example.syscovid19.MainActivity;
 import com.example.syscovid19.R;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewsFragment extends Fragment {
 
-    private NewsViewModel newsViewModel;
+    private TabLayout myTabLayout;
+    private ViewPager myViewPager;
+    private MyPageAdapter myPageAdapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        newsViewModel =
-                ViewModelProviders.of(this).get(NewsViewModel.class);
+    public void onCreate(Bundle savedInstanceState)
+    {
+        Log.d("Create","Create of News Fragment Happens!");
+        super.onCreate(savedInstanceState);
+        myPageAdapter=new MyPageAdapter(getChildFragmentManager());
+    }
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        Log.d("CreateView","CreateView of News Fragment Happens!");
         View root = inflater.inflate(R.layout.fragment_news, container, false);
-        final TextView textView = root.findViewById(R.id.text_news);
-        newsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+        myViewPager=(ViewPager)root.findViewById(R.id.pager_viewer);
+        myViewPager.setOffscreenPageLimit(5);
+        myTabLayout=(TabLayout)root.findViewById(R.id.tab_layout);
+        myTabLayout.addTab(myTabLayout.newTab());
+        myTabLayout.addTab(myTabLayout.newTab());
+        myTabLayout.addTab(myTabLayout.newTab());
+        myViewPager.setAdapter(myPageAdapter);
+        myTabLayout.setupWithViewPager(myViewPager);
+        ImageButton search_btn=(ImageButton)root.findViewById(R.id.search_button);
+        ImageButton menu_btn=(ImageButton)root.findViewById(R.id.menu_button);
+        search_btn.setOnClickListener(new View.OnClickListener()
+                                      {
+                                          @Override
+                                          public void onClick(View view) {
+                                              Toast.makeText(getContext(),"Refresh clicked",Toast.LENGTH_LONG).show();
+                                          }
+                                      }
+        );
+        menu_btn.setOnClickListener(new View.OnClickListener()
+                                      {
+                                          @Override
+                                          public void onClick(View view) {
+                                              Intent intent=new Intent(getActivity(), MenuActivity.class);
+                                              startActivityForResult(intent,0);
+                                              getActivity().overridePendingTransition(R.anim.bottom_up_news,R.anim.bottom_stable_news);
+                                          }
+                                      }
+        );
         return root;
+    }
+
+
+    private class MyPageAdapter extends FragmentStatePagerAdapter
+    {
+        public MyPageAdapter(@NonNull FragmentManager fm)
+        {
+            super(fm);
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position)
+        {
+            return GlobalCategory.getInstance().getItem(position).getTitle();
+        }
+
+        @Override
+        public Fragment getItem(int position)
+        {
+            return NewsList.newInstance(GlobalCategory.getInstance().getItem(position).getTitle(),"test");
+        }
+
+        @Override
+        public int getCount()
+        {
+            return GlobalCategory.getInstance().getSize();
+        }
     }
 }

@@ -9,10 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.news.MenuActivity"></activity>
+        <activity android:name=".ui.news.SearchActivity" />
+        <activity android:name=".ui.news.NewsDetail" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/title_activity_main"></activity>
-
+            android:label="@string/title_activity_main" />
         <activity
             android:name=".CreateActivity"
             android:screenOrientation="portrait">

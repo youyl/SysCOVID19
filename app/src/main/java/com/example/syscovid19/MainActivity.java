@@ -1,9 +1,13 @@
 package com.example.syscovid19;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.syscovid19.ui.news.GlobalCategory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -25,6 +29,15 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode!=RESULT_OK)return;
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d("Refresh", "Successful Call Create3");
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController.navigate(R.id.navigation_news);
     }
 
 }
