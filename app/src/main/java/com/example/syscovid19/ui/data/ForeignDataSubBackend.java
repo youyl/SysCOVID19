@@ -37,7 +37,7 @@ public class ForeignDataSubBackend extends DataSubBackend {
                         dataItemList =  new ArrayList<>();
                     }
                     JSONObject jsonData = new JSONObject(body);
-                    String pattern = "^([^\\|]+)$";
+                    String pattern = "^(?!World)([^\\|]+)$";
                     dataItemList = getDataItemList(jsonData, pattern);
                 } catch(Exception e) {
                     e.printStackTrace();
