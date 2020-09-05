@@ -32,14 +32,6 @@ public class NewsData
     {
         return id;
     }
-    public void setContent(final String _content)
-    {
-        content=_content;
-    }
-    public String getContent()
-    {
-        return content;
-    }
     public String getType()
     {
         return type;

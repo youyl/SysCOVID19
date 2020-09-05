@@ -55,7 +55,9 @@ public class NewsFragment extends Fragment {
                                       {
                                           @Override
                                           public void onClick(View view) {
-                                              Toast.makeText(getContext(),"Refresh clicked",Toast.LENGTH_LONG).show();
+                                              Intent intent=new Intent(getActivity(), SearchActivity.class);
+                                              startActivityForResult(intent,0);
+                                              getActivity().overridePendingTransition(R.anim.bottom_up_news,R.anim.bottom_stable_news);
                                           }
                                       }
         );

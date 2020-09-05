@@ -26,6 +26,7 @@ public class NewsCrawler
     {
         return instance;
     }
+
     //pagesize=10
     public ArrayList<NewsData> getNews(final String type, final String keyword, int startPage)
     {
@@ -85,5 +86,40 @@ public class NewsCrawler
             }
         }
         return lst;
+    }
+
+    public String getNewsDetail(String id)
+    {
+        String str=new String();
+        try {
+            String adr = new StringBuilder().append("https://covid-dashboard-api.aminer.cn/event/")
+                    .append(id).toString();
+            URL url = new URL(adr);
+            HttpURLConnection path=(HttpURLConnection) url.openConnection();
+            path.setRequestMethod("GET");
+            path.setConnectTimeout(5000);
+            path.setReadTimeout(5000);
+            path.connect();
+
+            InputStream inputStream = path.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder jsonStr = new StringBuilder();
+            String inputLine;
+            while ((inputLine = bufferedReader.readLine()) != null)
+            {
+                jsonStr.append(inputLine);
+            }
+            bufferedReader.close();
+            inputStreamReader.close();
+            inputStream.close();
+            inputLine=jsonStr.toString();
+
+            JSONObject largeObj=new JSONObject(inputLine);
+            JSONObject smallObj=largeObj.getJSONObject("data");
+            str=GlobalCategory.decodeUnicode(smallObj.getString("content"));
+        }catch (Exception e){
+            Log.d("Crawler Create Error","Detailed Error Created");}
+        return str;
     }
 }
