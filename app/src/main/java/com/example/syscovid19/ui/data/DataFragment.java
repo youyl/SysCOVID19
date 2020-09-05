@@ -48,7 +48,13 @@ public class DataFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return new DataSubFragment(new DomesticDataSubBackend());
+            switch(position){
+                case 0:
+                    return new DataSubFragment(DomesticDataSubBackend.getInstance());
+                default:
+                    return new DataSubFragment(ForeignDataSubBackend.getInstance());
+            }
+
         }
 
         @Override

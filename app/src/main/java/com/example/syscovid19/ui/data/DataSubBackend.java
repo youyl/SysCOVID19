@@ -1,11 +1,8 @@
 package com.example.syscovid19.ui.data;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.reactivestreams.Publisher;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,21 +10,28 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 
 public abstract class DataSubBackend {
-    public abstract Single<List<DataItem>> fetchData();
+    protected List<DataItem> dataItemList;
+    protected boolean all;
+
+    public abstract Single<Boolean> refreshData();
+
+    public List<DataItem> getDataItemList(){
+        if (dataItemList == null)
+            return new ArrayList<>();
+        if (all)
+            return dataItemList;
+        return dataItemList.subList(0, 10);
+    }
 
     static String getUrlBody(String url) throws IOException {
         URL cs = new URL(url);
@@ -54,39 +58,15 @@ public abstract class DataSubBackend {
                 item.confirmed = dataArray.getInt(0);
                 item.cured = dataArray.getInt(2);
                 item.dead = dataArray.getInt(3);
+                item.now = item.confirmed - item.cured - item.dead;
                 dataItemList.add(item);
             }
         }
+        Collections.sort(dataItemList, new Comparator<DataItem>() {
+            public int compare(DataItem o1, DataItem o2) {
+                return new Integer(o2.now).compareTo(o1.now);
+            }
+        });
         return dataItemList;
-    }
-}
-
-class DomesticDataSubBackend extends DataSubBackend {
-    @Override
-    public Single<List<DataItem>> fetchData(){
-        return Flowable.fromCallable(new Callable<List<DataItem>>() {
-            @Override
-            public List<DataItem> call() {
-                try {
-                    String url = "https://covid-dashboard.aminer.cn/api/dist/epidemic.json";
-                    String body = getUrlBody(url);
-                    if(body.equals("")) {
-                        Log.d("warning","DomesticDataSubBackend fetchData failed. ");
-                        return new ArrayList<>();
-                    }
-                    JSONObject jsonData = new JSONObject(body);
-                    String pattern = "^China\\|([^\\|]+)$";
-                    return getDataItemList(jsonData, pattern);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-        }).flatMap(new Function<List<DataItem>, Publisher<? extends DataItem>>() {
-            @Override
-            public Publisher<? extends DataItem> apply(@NonNull List<DataItem> dataItemList) throws Exception {
-                return Flowable.fromIterable(dataItemList);
-            }
-        }).toList().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 }
