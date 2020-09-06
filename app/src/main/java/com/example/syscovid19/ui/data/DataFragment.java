@@ -1,6 +1,7 @@
 package com.example.syscovid19.ui.data;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ public class DataFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.v("test", "DataFragment onCreate. ");
         super.onCreate(savedInstanceState);
         pagerAdapter = new DataPagerAdapter(getChildFragmentManager());
     }
@@ -48,13 +50,8 @@ public class DataFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            switch(position){
-                case 0:
-                    return new DataSubFragment(DomesticDataSubBackend.getInstance());
-                default:
-                    return new DataSubFragment(ForeignDataSubBackend.getInstance());
-            }
-
+            Log.v("test", "DataPagerAdapter getItem " + String.valueOf(position) + ". ");
+            return new DataSubFragment(DataSubBackend.getInstance(position), DataLineBackend.getInstance(position));
         }
 
         @Override

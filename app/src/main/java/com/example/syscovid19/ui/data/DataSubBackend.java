@@ -1,5 +1,7 @@
 package com.example.syscovid19.ui.data;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,16 +16,60 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public abstract class DataSubBackend {
+public class DataSubBackend {
     protected List<DataItem> dataItemList;
     protected boolean all;
+    private int mode;
+    private static DataSubBackend[] _instance = {new DataSubBackend(0), new DataSubBackend(1)};
 
-    public abstract Single<Boolean> refreshData();
+    public static DataSubBackend getInstance(int i){
+        if (i < 0 || i > 1)
+            return null;
+        return _instance[i];
+    }
+
+    private DataSubBackend(int m){
+        super();
+        mode = m;
+    }
+
+    public Single<Boolean> refreshData(){
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                try {
+                    String url = "https://covid-dashboard.aminer.cn/api/dist/epidemic.json";
+                    String body = getUrlBody(url);
+                    if(body.equals("")) {
+                        if (mode == 0)
+                            Log.d("warning","Domestic dataSubBackend fetchData failed. ");
+                        else
+                            Log.d("warning","Foreign dataSubBackend fetchData failed. ");
+                        dataItemList =  new ArrayList<>();
+                    }
+                    JSONObject jsonData = new JSONObject(body);
+                    String pattern;
+                    if (mode == 0)
+                        pattern = "^China\\|([^\\|]+)$";
+                    else
+                        pattern = "^(?!World)([^\\|]+)$";
+                    dataItemList = getDataItemList(jsonData, pattern);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    dataItemList = null;
+                }
+                return !(dataItemList == null || dataItemList.size() == 0);
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
 
     public List<DataItem> getDataItemList(){
         if (dataItemList == null)

@@ -6,8 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.example.syscovid19.ui.data.DomesticDataSubBackend;
-import com.example.syscovid19.ui.data.ForeignDataSubBackend;
+import com.example.syscovid19.ui.data.DataLineBackend;
+import com.example.syscovid19.ui.data.DataSubBackend;
 
 import io.reactivex.functions.Consumer;
 
@@ -30,43 +30,36 @@ public class CreateActivity extends Activity {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (get() < 2 &&  System.currentTimeMillis() < endTime);
+                while (get() < 1 &&  System.currentTimeMillis() < endTime);
                 Intent mainIntent = new Intent(CreateActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();
             }
         });
         thread.start();
-        DomesticDataSubBackend.getInstance().refreshData().subscribe(new Consumer<Boolean>() {
+        final DataSubBackend dataSubBackend[] = {DataSubBackend.getInstance(0), DataSubBackend.getInstance(1)};
+        dataSubBackend[0].refreshData().subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if (aBoolean){
-                    add();
-                    return;
+                    final String name = dataSubBackend[0].getDataItemList().get(0).name;
+                    DataLineBackend.getInstance(0).fetchData(name).subscribe(new Consumer<Boolean>() {
+                        @Override
+                        public void accept(Boolean aBoolean) throws Exception {
+                            add();
+                            return;
+                        }
+                    });
                 }
-                DomesticDataSubBackend.getInstance().refreshData().subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        add();
-                        return;
-                    }
-                });
             }
         });
-        ForeignDataSubBackend.getInstance().refreshData().subscribe(new Consumer<Boolean>() {
+        dataSubBackend[1].refreshData().subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if (aBoolean){
-                    add();
-                    return;
+                    final String name = dataSubBackend[1].getDataItemList().get(0).name;
+                    DataLineBackend.getInstance(1).fetchData(name);
                 }
-                ForeignDataSubBackend.getInstance().refreshData().subscribe(new Consumer<Boolean>() {
-                    @Override
-                    public void accept(Boolean aBoolean) throws Exception {
-                        add();
-                        return;
-                    }
-                });
             }
         });
     }
