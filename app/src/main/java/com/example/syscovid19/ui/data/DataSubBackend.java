@@ -82,6 +82,7 @@ public class DataSubBackend {
     static String getUrlBody(String url) throws IOException {
         URL cs = new URL(url);
         URLConnection tc = cs.openConnection();
+        tc.setConnectTimeout(10 * 1000);
         String inputLine, body = "";
         try(BufferedReader in = new BufferedReader(new InputStreamReader(tc.getInputStream()))){
             while ((inputLine = in.readLine()) != null)

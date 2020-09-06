@@ -45,7 +45,6 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
@@ -59,6 +58,7 @@ public class DataSubFragment extends Fragment {
     private int checked;
     private SmartTable table;
     private LineChart lineChart;
+    private Button button;
 
     DataSubFragment(DataSubBackend d, DataLineBackend l) {
         dataSubBackend = d;
@@ -77,7 +77,6 @@ public class DataSubFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(true);
-                checked = 0;
                 refreshData();
             }
         });
@@ -94,7 +93,10 @@ public class DataSubFragment extends Fragment {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if (aBoolean){
-                    table.setData(new ArrayList());
+                    checked = 0;
+                    dataSubBackend.all = false;
+                    table.setData(dataSubBackend.getDataItemList());
+                    button.setVisibility(Button.VISIBLE);
                     fetchLineChart();
                 }
                 else{
@@ -177,16 +179,18 @@ public class DataSubFragment extends Fragment {
                     createTable();
                     break;
                 case 1:
-                    final Button button = ((ButtonViewHolder) holder).button;
+                    button = ((ButtonViewHolder) holder).button;
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             dataSubBackend.all = true;
                             button.setVisibility(View.INVISIBLE);
-                            table.setData(new ArrayList());
+                            table.setData(dataSubBackend.getDataItemList());
                             adapter.notifyDataSetChanged();
                         }
                     });
+                    if (dataSubBackend.getDataItemList().size() == 0)
+                        button.setVisibility(Button.INVISIBLE);
                     break;
                 default:
                     lineChart = ((LineChartViewHolder) holder).chart;
