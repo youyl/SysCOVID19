@@ -57,10 +57,4 @@ public class NewsDetail extends AppCompatActivity
         dateview.setText(date);
         contentview.setText(content);
     }
-
-    public void finish()
-    {
-        super.finish();
-        overridePendingTransition(R.anim.bottom_stable_news,R.anim.bottom_down_news);
-    }
 }

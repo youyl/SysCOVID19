@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:clickable="true"
+    app:cardBackgroundColor="#dddddd"
     >
     <TextView
         android:id="@+id/search_item_text"

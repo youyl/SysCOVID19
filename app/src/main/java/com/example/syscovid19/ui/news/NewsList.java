@@ -66,25 +66,47 @@ public class NewsList extends Fragment {
         return keyword;
     }
 
-    public void markVisited(NewsData news)
+    public void markVisited(NewsData news,String str,int _id)
     {
-        NewsDatabase.getInstance().addHistory(news.getId());
         NewsDatabase.getInstance().addData(news);
+        myAdapter.notifyItemChanged(_id);
     }
-    public void launchDetail(NewsData _input)
+
+    public Single<Boolean> getNewsContent(final String _id)
     {
-        String content=NewsCrawler.getInstance().getNewsDetail(_input.getId());
-        if(content.isEmpty())
-        {
-            Toast.makeText(getContext(),"无法取得条目内容",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Intent intent=new Intent(getActivity(),NewsDetail.class);
-        intent.putExtra("TITLE",_input.getTitle());
-        intent.putExtra("SOURCE",_input.getSource());
-        intent.putExtra("DATE",_input.getDate());
-        intent.putExtra("CONTENT",content);
-        markVisited(_input);
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                if(NewsDatabase.getInstance().iscached(_id))return Boolean.TRUE;
+                String str=NewsCrawler.getInstance().getNewsDetail(_id);
+                if(str==null)return Boolean.FALSE;
+                if(str.isEmpty())str="正文为空";
+                NewsDatabase.getInstance().addDetail(_id,str);
+                return Boolean.TRUE;
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+    public void launchDetail(final NewsData _input, final int _id)
+    {
+        getNewsContent(_input.getId()).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+                if(aBoolean){
+                    String content=NewsDatabase.getInstance().findContent(_input.getId());
+                    markVisited(_input,content,_id);
+                    Intent intent=new Intent(getActivity(),NewsDetail.class);
+                    intent.putExtra("TITLE",_input.getTitle());
+                    intent.putExtra("SOURCE",_input.getSource());
+                    intent.putExtra("DATE",_input.getDate());
+                    intent.putExtra("CONTENT",content);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"无法获取正文",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -96,7 +118,7 @@ public class NewsList extends Fragment {
             myTitle = getArguments().getString("Title");
             myCode = getArguments().getString("Code");
         }
-        myAdapter=new NewsListAdapter(getContext());
+        myAdapter=new NewsListAdapter(this);
         //set click listener
     }
 
@@ -113,6 +135,7 @@ public class NewsList extends Fragment {
             public void onRefresh()
             {
                 mySwipeRefresh.setRefreshing(true);
+                myAdapter.setIsRefreshing(true);
                 failtorefresh.setVisibility(View.GONE);
                 refresh();
             }
@@ -135,8 +158,10 @@ public class NewsList extends Fragment {
                 if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastItemShown==myAdapter.getItemCount()-1)
                 {
                     if(!myAdapter.getIsRefreshing()) {
-                        myAdapter.setIsRefreshing(true);
-                        append();
+                        if(!myAdapter.isIsfreeze()) {
+                            myAdapter.setIsRefreshing(true);
+                            append();
+                        }
                     }
                 }
             }
@@ -164,13 +189,16 @@ public class NewsList extends Fragment {
                 if(aBoolean.equals(Boolean.FALSE))
                 {
                     failtorefresh.setVisibility(View.VISIBLE);
+                    myAdapter.setFreeze(true);
                 }
                 else
                 {
                     failtorefresh.setVisibility(View.GONE);
+                    myAdapter.setFreeze(false);
                 }
                 myAdapter.setNewslist(tempList);
                 mySwipeRefresh.setRefreshing(false);
+                myAdapter.setIsRefreshing(false);
             }
         });
     }
@@ -185,10 +213,12 @@ public class NewsList extends Fragment {
                 if(aBoolean.equals(Boolean.FALSE))
                 {
                     Toast.makeText(getContext(),"无法获取更多",Toast.LENGTH_SHORT).show();
+                    myAdapter.setFreeze(true);
                 }
                 else {
                     myAdapter.appendNewslist(tempList);
                     failtorefresh.setVisibility(View.GONE);
+                    myAdapter.setFreeze(false);
                 }
                 myAdapter.setIsRefreshing(false);
             }
@@ -212,5 +242,5 @@ public class NewsList extends Fragment {
                 else return Boolean.TRUE;
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-    }//*/
+    }
 }

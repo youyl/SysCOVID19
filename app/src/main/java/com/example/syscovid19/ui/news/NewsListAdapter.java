@@ -24,7 +24,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private ArrayList<NewsData>newslist=new ArrayList<NewsData>();
     private boolean isRefreshing;
-    private Context context;
+    private NewsList fat;
+    private boolean isfreeze;
     private AdapterView.OnItemClickListener myItemClicker;
 
     public void setIsRefreshing(boolean val)
@@ -40,13 +41,27 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public int refreshSize()
     {
-        if(isRefreshing)return 1;
-        else return 0;
+        if(isfreeze)return 0;
+        else return 1;
     }
 
-    NewsListAdapter(Context _context)
+    public boolean isIsfreeze()
     {
-        context=_context;
+        return isfreeze;
+    }
+    public void setFreeze(boolean val)
+    {
+        if(val!=isfreeze) {
+            isfreeze = val;
+            this.notifyDataSetChanged();
+        }
+    }
+
+    NewsListAdapter(NewsList _Fat)
+    {
+        fat=_Fat;
+        isRefreshing=false;
+        isfreeze=true;
     }
     @NonNull
     @Override
@@ -115,7 +130,9 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View view)
         {
-            return;
+            int pos=this.getLayoutPosition();
+            if(pos<newslist.size())
+                fat.launchDetail(newslist.get(pos),pos);
         }
     }
 

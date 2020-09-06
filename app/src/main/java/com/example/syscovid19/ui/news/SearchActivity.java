@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,6 +29,7 @@ public class SearchActivity extends AppCompatActivity {
     private NewsList nl;
     private ListView mylv;
     private HistoryAdapter myAdaptor;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +40,11 @@ public class SearchActivity extends AppCompatActivity {
 
         FragmentManager fm=getSupportFragmentManager();
         nl=(NewsList)fm.findFragmentById(R.id.search_fragment);
+        searchView=findViewById(R.id.search_window);
         mylv=findViewById(R.id.search_history_list);
         mylv.bringToFront();
 
-        myAdaptor=new HistoryAdapter(this);
+        myAdaptor=new HistoryAdapter(this,this);
         mylv.setAdapter(myAdaptor);
 
         Button btn=findViewById(R.id.search_exit_btn);
@@ -53,7 +56,6 @@ public class SearchActivity extends AppCompatActivity {
                                    }
                                }
         );
-        final SearchView searchView=findViewById(R.id.search_window);
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -103,12 +105,19 @@ public class SearchActivity extends AppCompatActivity {
     public class HistoryAdapter extends BaseAdapter
     {
 
+        private SearchActivity fat;
         private Context context;
         private ArrayList<String>historylist=new ArrayList<String>();
 
-        HistoryAdapter(Context _context)
+        public String getContent(int position)
+        {
+            return historylist.get(position);
+        }
+
+        HistoryAdapter(Context _context,SearchActivity _fat)
         {
             context=_context;
+            fat=_fat;
         }
 
         public void updatelist()
@@ -133,10 +142,16 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(final int i, View view, ViewGroup viewGroup) {
             view=LayoutInflater.from(context).inflate(R.layout.item_search_history,viewGroup,false);
             TextView text=view.findViewById(R.id.search_item_text);
             text.setText(historylist.get(i));
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fat.searchView.setQuery(historylist.get(i),true);
+                }
+            });
             return view;
         }
     }

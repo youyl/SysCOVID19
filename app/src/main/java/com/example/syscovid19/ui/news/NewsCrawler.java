@@ -69,11 +69,11 @@ public class NewsCrawler
                     for (int i=0;i<data.length();i++)
                     {
                         JSONObject newsObj=data.getJSONObject(i);
-                        String newsType=GlobalCategory.decodeUnicode(newsObj.getString("type"));
-                        String id=GlobalCategory.decodeUnicode(newsObj.getString("_id"));
-                        String title=GlobalCategory.decodeUnicode(newsObj.getString("title"));
-                        String source=GlobalCategory.decodeUnicode(newsObj.getString("source"));
-                        String date=GlobalCategory.decodeUnicode(newsObj.getString("time"));
+                        String title=newsObj.getString("title");
+                        String newsType=newsObj.getString("type");
+                        String id=newsObj.getString("_id");
+                        String source=newsObj.getString("source");
+                        String date=newsObj.getString("time");
                         if(title.contains(keyword)) {
                             lst.add(new NewsData(title, date, source, id, newsType));
                         }
@@ -115,11 +115,11 @@ public class NewsCrawler
                     for (int i=0;i<data.length();i++)
                     {
                         JSONObject newsObj=data.getJSONObject(i);
-                        String newsType=GlobalCategory.decodeUnicode(newsObj.getString("type"));
-                        String id=GlobalCategory.decodeUnicode(newsObj.getString("_id"));
-                        String title=GlobalCategory.decodeUnicode(newsObj.getString("title"));
-                        String source=GlobalCategory.decodeUnicode(newsObj.getString("source"));
-                        String date=GlobalCategory.decodeUnicode(newsObj.getString("time"));
+                        String title=newsObj.getString("title");
+                        String newsType=newsObj.getString("type");
+                        String id=newsObj.getString("_id");
+                        String source=newsObj.getString("source");
+                        String date=newsObj.getString("time");
                         lst.add(new NewsData(title,date,source,id,newsType));
                     }
 
@@ -136,6 +136,7 @@ public class NewsCrawler
         try {
             String adr = new StringBuilder().append("https://covid-dashboard-api.aminer.cn/event/")
                     .append(id).toString();
+            Log.d("Detail Adr Created",adr);
             URL url = new URL(adr);
             HttpURLConnection path=(HttpURLConnection) url.openConnection();
             path.setRequestMethod("GET");
@@ -156,12 +157,13 @@ public class NewsCrawler
             inputStreamReader.close();
             inputStream.close();
             inputLine=jsonStr.toString();
+            Log.d("Detail Json Created",inputLine);
 
             JSONObject largeObj=new JSONObject(inputLine);
             JSONObject smallObj=largeObj.getJSONObject("data");
-            str=GlobalCategory.decodeUnicode(smallObj.getString("content"));
+            str=smallObj.getString("content");
         }catch (Exception e){
-            Log.d("Crawler Create Error","Detailed Error Created");}
+            Log.d("DetailCrawler Create Error","Something Happend"); return null;}
         return str;
     }
 }
