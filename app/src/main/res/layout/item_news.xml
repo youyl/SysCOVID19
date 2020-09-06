@@ -39,7 +39,8 @@
                     android:layout_height="40dp"
                     android:layout_gravity="top"
                     android:gravity="center_vertical|start"
-                    android:textSize="20sp"
+                    android:singleLine="true"
+                    android:textSize="18sp"
                     android:textColor="#cc111111"
                     />
 

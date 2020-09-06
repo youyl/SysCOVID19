@@ -92,7 +92,7 @@ public class NewsFragment extends Fragment {
         @Override
         public Fragment getItem(int position)
         {
-            return NewsList.newInstance(GlobalCategory.getInstance().getItem(position).getTitle(),"test");
+            return NewsList.newInstance(GlobalCategory.getInstance().getItem(position).getCode(),"test");
         }
 
         @Override

@@ -14,7 +14,8 @@
     <string name="menu_right">点击添加分类</string>
     <string name="news_detail_exit">退出</string>
     <string name="news_detail_share">分享</string>
-    <string name="news_unable_refresh">无法获取更多内容</string>
+    <string name="news_unable_refresh">刷新失败，请检查网络连接</string>
+    <string name="news_unable_search">搜索无结果，下拉进行更多搜索</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -19,6 +19,7 @@ public class MenuActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         Log.d("Menu Create","News Menu Created");
+        setTitle("设置分类列表");
         setContentView(R.layout.activity_menu);
         Button btn=findViewById(R.id.return_button);
         startCat=GlobalCategory.getInstance().getCatVal();

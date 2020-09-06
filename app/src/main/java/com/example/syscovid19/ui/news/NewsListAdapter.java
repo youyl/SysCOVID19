@@ -1,6 +1,7 @@
 package com.example.syscovid19.ui.news;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +23,26 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final int ITEM_PLACETAKER=2;
 
     private ArrayList<NewsData>newslist=new ArrayList<NewsData>();
-    private int placeTakerCnt;
+    private boolean isRefreshing;
     private Context context;
     private AdapterView.OnItemClickListener myItemClicker;
+
+    public void setIsRefreshing(boolean val)
+    {
+        isRefreshing=val;
+        this.notifyDataSetChanged();
+    }
+
+    public boolean getIsRefreshing()
+    {
+        return isRefreshing;
+    }
+
+    public int refreshSize()
+    {
+        if(isRefreshing)return 1;
+        else return 0;
+    }
 
     NewsListAdapter(Context _context)
     {
@@ -35,29 +53,44 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         View view;
-        if(viewType==ITEM_NEWS)
-        {
-            view=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news,parent,false);
+        if(viewType==ITEM_NEWS) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_news, parent, false);
             return new NewsViewHolder(view);
         }
-        if(viewType==ITEM_PLACETAKER)
+        else
         {
-            view=LayoutInflater.from(parent.getContext()).inflate(R.layout.news_placetaker,parent,false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_placetaker, parent, false);
             return new PlaceTakerViewHolder(view);
         }
-        return null;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
     {
-
+        if(holder instanceof NewsViewHolder)
+        {
+            NewsData target=newslist.get(position);
+            NewsViewHolder trueholder=(NewsViewHolder)holder;
+            if(target.getType().equals(new String("news")))trueholder.type.setText(R.string.news_item_news);
+            if(target.getType().equals(new String("event")))trueholder.type.setText(R.string.news_item_event);
+            if(target.getType().equals(new String("points")))trueholder.type.setText(R.string.news_item_point);
+            if(target.getType().equals(new String("paper")))trueholder.type.setText(R.string.news_item_paper);
+            trueholder.title.setText(target.getTitle());
+            trueholder.date.setText(target.getDate());
+            trueholder.source.setText(target.getSource());
+        }
     }
 
     @Override
     public int getItemCount()
     {
-        return newslist.size()+placeTakerCnt;
+        return newslist.size()+refreshSize();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(position==newslist.size())return ITEM_PLACETAKER;
+        else return ITEM_NEWS;
     }
 
     public class NewsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
@@ -82,12 +115,29 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @Override
         public void onClick(View view)
         {
+            return;
         }
     }
+
     public class PlaceTakerViewHolder extends RecyclerView.ViewHolder
     {
         public PlaceTakerViewHolder(@NonNull View itemView) {
             super(itemView);
         }
+    }
+
+    public void setNewslist(ArrayList<NewsData> _newslist)
+    {
+        newslist = _newslist;
+        this.notifyDataSetChanged();
+    }
+
+    public void appendNewslist(ArrayList<NewsData> _newslist)
+    {
+        int origin=newslist.size();
+        newslist.addAll(_newslist);
+        Log.d("Adaptor Append Created",String.valueOf(_newslist.size()).toString());
+        Log.d("Adaptor Append Created Aftermath",String.valueOf(newslist.size()).toString());
+        this.notifyDataSetChanged();
     }
 }

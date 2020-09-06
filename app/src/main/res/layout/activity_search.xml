@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:tooltipText="@string/search_hint"
         android:background="#eeeeee"
         >
 
@@ -39,6 +38,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ListView
+        android:id="@+id/search_history_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/search_top_bar"
