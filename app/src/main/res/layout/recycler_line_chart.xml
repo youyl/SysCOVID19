@@ -6,9 +6,8 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="256dp"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_bottom_margin"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin" />
 
 </LinearLayout>

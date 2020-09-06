@@ -55,7 +55,7 @@ public class DataSubFragment extends Fragment {
     private DataSubBackend dataSubBackend;
     private DataLineBackend dataLineBackend;
     private DataAdapter adapter;
-    private int checked;
+    private int checked = -1;
     private SmartTable table;
     private LineChart lineChart;
     private Button button;
@@ -93,7 +93,7 @@ public class DataSubFragment extends Fragment {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if (aBoolean){
-                    checked = 0;
+                    checked = -1;
                     dataSubBackend.all = false;
                     table.setData(dataSubBackend.getDataItemList());
                     button.setVisibility(Button.VISIBLE);
@@ -108,10 +108,9 @@ public class DataSubFragment extends Fragment {
     }
 
     public void fetchLineChart(){
-        List<DataItem> list = dataSubBackend.getDataItemList();
-        if (list.size() == 0)
-            return;
-        final String name = list.get(checked).name;
+        String name = "";
+        if (checked >= 0)
+            name = dataSubBackend.getDataItemList().get(checked).name;
         dataLineBackend.fetchData(name).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
@@ -145,7 +144,7 @@ public class DataSubFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 }
                 else{
-                    Toast.makeText(getContext(), "获取" + name + "疫情数据失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "获取疫情数据失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -162,11 +161,11 @@ public class DataSubFragment extends Fragment {
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_smart_table, parent, false);
                     return new SmartTableViewHolder(view);
                 case 1:
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_button, parent, false);
-                    return new ButtonViewHolder(view);
-                default:
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_line_chart, parent, false);
                     return new LineChartViewHolder(view);
+                default:
+                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_button, parent, false);
+                    return new ButtonViewHolder(view);
             }
         }
 
@@ -175,10 +174,14 @@ public class DataSubFragment extends Fragment {
             Log.v("test", "DataSubFragment onBindViewHolder " + position + ". ");
             switch (position) {
                 case 0:
+                    lineChart = ((LineChartViewHolder) holder).chart;
+                    createLineChart();
+                    break;
+                case 1:
                     table = ((SmartTableViewHolder) holder).table;
                     createTable();
                     break;
-                case 1:
+                default:
                     button = ((ButtonViewHolder) holder).button;
                     button.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -191,10 +194,6 @@ public class DataSubFragment extends Fragment {
                     });
                     if (dataSubBackend.getDataItemList().size() == 0)
                         button.setVisibility(Button.INVISIBLE);
-                    break;
-                default:
-                    lineChart = ((LineChartViewHolder) holder).chart;
-                    createLineChart();
             }
         }
 
@@ -335,7 +334,14 @@ public class DataSubFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position) {
-            return position;
+            switch(position){
+                case 0:
+                    return 1;
+                case 1:
+                    return 0;
+                default:
+                    return 2;
+            }
         }
 
         @Override

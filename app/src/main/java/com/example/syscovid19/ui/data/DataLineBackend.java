@@ -64,10 +64,18 @@ public class DataLineBackend {
     List<Entry> getConfirmedList(JSONObject jsonData, String key) throws JSONException {
         confirmedList = new ArrayList<>();
         JSONArray jsonArray;
-        if (mode == 0)
-            jsonArray = (JSONArray) jsonData.getJSONObject("China|" + key).get("data");
-        else
-            jsonArray = (JSONArray) jsonData.getJSONObject(key).get("data");
+        if (mode == 0) {
+            if (key.length() == 0)
+                jsonArray = (JSONArray) jsonData.getJSONObject("China").get("data");
+            else
+                jsonArray = (JSONArray) jsonData.getJSONObject("China|" + key).get("data");
+        }
+        else {
+            if (key.length() == 0)
+                jsonArray = (JSONArray) jsonData.getJSONObject("World").get("data");
+            else
+                jsonArray = (JSONArray) jsonData.getJSONObject(key).get("data");
+        }
         final int num = 30;
         int i = 0;
         if (jsonArray.length() < num){
