@@ -31,9 +31,10 @@ public class NewsCrawler
     public ArrayList<NewsData> getNews(final String type,final String keyword, int startPage)
     {
         ArrayList<NewsData>lst=new ArrayList<NewsData>();
+        Log.d("Get news Created",type);
         if(type.equals(new String("offline")))
         {
-            //crawl from database
+            lst=NewsDatabase.getInstance().getVisitedData(startPage);
         }
         else
         {
@@ -157,7 +158,6 @@ public class NewsCrawler
             inputStreamReader.close();
             inputStream.close();
             inputLine=jsonStr.toString();
-            Log.d("Detail Json Created",inputLine);
 
             JSONObject largeObj=new JSONObject(inputLine);
             JSONObject smallObj=largeObj.getJSONObject("data");

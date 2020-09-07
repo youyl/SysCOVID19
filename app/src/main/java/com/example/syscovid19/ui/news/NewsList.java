@@ -30,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NewsList extends Fragment {
 
+    private static final String offline_tag=new String("offline");
     private String myTitle;
     private String myCode;
     private TextView failtorefresh;
@@ -66,13 +67,7 @@ public class NewsList extends Fragment {
         return keyword;
     }
 
-    public void markVisited(NewsData news,String str,int _id)
-    {
-        NewsDatabase.getInstance().addData(news);
-        myAdapter.notifyItemChanged(_id);
-    }
-
-    public Single<Boolean> getNewsContent(final String _id)
+    public Single<Boolean> getNewsContent(final String _id,final NewsData _news)
     {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
@@ -81,19 +76,25 @@ public class NewsList extends Fragment {
                 String str=NewsCrawler.getInstance().getNewsDetail(_id);
                 if(str==null)return Boolean.FALSE;
                 if(str.isEmpty())str="正文为空";
-                NewsDatabase.getInstance().addDetail(_id,str);
+                NewsDatabase.getInstance().addDetail(_id,str,_news);
                 return Boolean.TRUE;
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
+
+    public boolean isOffline()
+    {
+        return myTitle.equals(offline_tag);
+    }
+
     public void launchDetail(final NewsData _input, final int _id)
     {
-        getNewsContent(_input.getId()).subscribe(new Consumer<Boolean>() {
+        getNewsContent(_input.getId(),_input).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if(aBoolean){
                     String content=NewsDatabase.getInstance().findContent(_input.getId());
-                    markVisited(_input,content,_id);
+                    myAdapter.notifyItemChanged(_id);
                     Intent intent=new Intent(getActivity(),NewsDetail.class);
                     intent.putExtra("TITLE",_input.getTitle());
                     intent.putExtra("SOURCE",_input.getSource());
@@ -119,7 +120,6 @@ public class NewsList extends Fragment {
             myCode = getArguments().getString("Code");
         }
         myAdapter=new NewsListAdapter(this);
-        //set click listener
     }
 
     @Override
@@ -145,6 +145,10 @@ public class NewsList extends Fragment {
             myTitle="search";
             failtorefresh.setText(R.string.news_unable_search);
         }
+        if(isOffline())
+        {
+            failtorefresh.setText("下拉加载本地缓存");
+        }
         myLayoutManager=new LinearLayoutManager(getContext());
         myRecycler=root.findViewById(R.id.recycler_view);
         myRecycler.setLayoutManager(myLayoutManager);
@@ -158,7 +162,7 @@ public class NewsList extends Fragment {
                 if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastItemShown==myAdapter.getItemCount()-1)
                 {
                     if(!myAdapter.getIsRefreshing()) {
-                        if(!myAdapter.isIsfreeze()) {
+                        if(!myAdapter.isIsfreeze()||isOffline()) {
                             myAdapter.setIsRefreshing(true);
                             append();
                         }
@@ -182,7 +186,7 @@ public class NewsList extends Fragment {
     {
         curPage++;
         if(curPage>6)curPage-=6;
-        if(myTitle.equals(new String("search")))curPage=1;
+        if(myTitle.equals(new String("offline")))curPage=1;
         refreshNews(curPage).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
@@ -206,7 +210,7 @@ public class NewsList extends Fragment {
     public void append()
     {
         curChunk+=6;
-        if(myTitle.equals(new String("search")))curChunk-=5;
+        if(myTitle.equals(new String("offline")))curChunk-=5;
         refreshNews(curChunk).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
@@ -232,7 +236,7 @@ public class NewsList extends Fragment {
             public Boolean call() throws Exception {
                 ArrayList<NewsData>newslist;
                 newslist=NewsCrawler.getInstance().getNews(myTitle, keyword,startPage);
-                Log.d("NetworkTty Created","Able to Fetch News");
+                Log.d("NetworkTry Created","Able to Fetch News");
                 tempList=newslist;
                 if(newslist.size()==0)
                 {

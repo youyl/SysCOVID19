@@ -8,5 +8,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
+        android:indeterminateTint="@color/colorPrimary"
         android:layout_gravity="center"/>
 </LinearLayout>

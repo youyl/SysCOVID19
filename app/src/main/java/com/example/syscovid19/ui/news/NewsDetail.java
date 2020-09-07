@@ -26,7 +26,7 @@ public class NewsDetail extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
         title=getIntent().getStringExtra("TITLE");
-        content=getIntent().getStringExtra("CONTENT");
+        content=new StringBuilder().append("    ").append(getIntent().getStringExtra("CONTENT")).toString();
         source=getIntent().getStringExtra("SOURCE");
         date=getIntent().getStringExtra("DATE");
 

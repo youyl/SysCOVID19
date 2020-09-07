@@ -1,11 +1,13 @@
 package com.example.syscovid19.ui.news;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -51,6 +53,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
     public void setFreeze(boolean val)
     {
+        if(fat.isOffline())val=true;
         if(val!=isfreeze) {
             isfreeze = val;
             this.notifyDataSetChanged();
@@ -93,6 +96,20 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             trueholder.title.setText(target.getTitle());
             trueholder.date.setText(target.getDate());
             trueholder.source.setText(target.getSource());
+            if(!fat.isOffline()&&NewsDatabase.getInstance().iscached(target.getId()))
+            {
+                trueholder.title.setTextColor(0xffb0b0b0);
+                trueholder.date.setTextColor(0xffc0c0c0);
+                trueholder.source.setTextColor(0xffc0c0c0);
+                trueholder.type.setTextColor(0xffa0a0a0);
+            }
+            else
+            {
+                trueholder.title.setTextColor(0xff101010);
+                trueholder.date.setTextColor(0xff808080);
+                trueholder.source.setTextColor(0xff808080);
+                trueholder.type.setTextColor(0xff000000);
+            }
         }
     }
 

@@ -1,26 +1,25 @@
 package com.example.syscovid19.ui.news;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
 public class NewsDatabase
 {
     private ArrayList<String>searchHistory;
-    private HashSet<String>visitedNews;
-    private ArrayList<NewsData>visitedData;
-    private ArrayList<String>cachedDataName;
+    private ArrayList<NewsData>cachedData;
     private ArrayList<String>cachedDataDetail;
     private HashSet<String>cachedNews;
 
     private NewsDatabase()
     {
         searchHistory=new ArrayList<String>();
-        visitedNews=new HashSet<String>();
         cachedNews=new HashSet<String>();
-        visitedData=new ArrayList<NewsData>();
+        cachedData=new ArrayList<NewsData>();
         cachedDataDetail=new ArrayList<String>();
-        cachedDataName=new ArrayList<String>();
-        //load from DB
+        //load from DB: searchhistory cacheddetail cacheddata
+        //load from cacheddata: cachednews
     }
     private static NewsDatabase instance=new NewsDatabase();
     public static NewsDatabase getInstance()
@@ -30,14 +29,10 @@ public class NewsDatabase
 
     @Override
     protected void finalize() throws Throwable {
-        //write back to DB
+        //write back to DB: searchhistory cacheddetail cacheddata
         super.finalize();
     }
 
-    public boolean is_visited(final String id)
-    {
-        return visitedNews.contains(id);
-    }
 
     public void addHistory(final String str)
     {
@@ -47,28 +42,23 @@ public class NewsDatabase
 
     public boolean iscached(String _name)
     {
+        Log.d("Cache Request Created",String.valueOf(cachedNews.size()));
         return cachedNews.contains(_name);
     }
 
-    public void addDetail(String _name,String _content)
+    public void addDetail(String _name,String _content,NewsData _data)
     {
         if(iscached(_name))return;
         cachedNews.add(_name);
-        cachedDataName.add(0,_name);
         cachedDataDetail.add(0,_content);
-    }
-
-    public void addData(final NewsData _data)
-    {
-        if(is_visited(_data.getId()))return;
-        visitedData.add(0,_data);
+        cachedData.add(0,_data);
     }
 
     public String findContent(String _id)
     {
-        for (int i=0;i<cachedDataName.size();i++)
+        for (int i=0;i<cachedData.size();i++)
         {
-            if(cachedDataName.get(i).equals(_id))
+            if(cachedData.get(i).getId().equals(_id))
             {
                 return cachedDataDetail.get(i);
             }
@@ -81,15 +71,16 @@ public class NewsDatabase
         return searchHistory;
     }
 
-    public ArrayList<NewsData> getHistoryData(int startPage)
+    public ArrayList<NewsData> getVisitedData(int startPage)
     {
         int start=(startPage-1)*10;
         int over=startPage*10;
-        if(over>=visitedData.size())over=visitedData.size()-1;
+        if(over>cachedData.size())over=cachedData.size();
+        Log.d("Visited Data Query Created",String.valueOf(startPage));
         ArrayList<NewsData>lst=new ArrayList<NewsData>();
         for (int i=start;i<over;i++)
         {
-            lst.add(visitedData.get(i));
+            lst.add(cachedData.get(i));
         }
         return lst;
     }

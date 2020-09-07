@@ -6,7 +6,6 @@ public class NewsData
     private String date;
     private String title;
     private String id;
-    private String content;
     private String type;
     NewsData(final String _title, final String _date, final String _source, final String _id,final String _type)
     {
