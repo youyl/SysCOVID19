@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_news"
-        android:name="com.example.syscovid19.ui.news.NewsFragment"
+        android:name="com.java.youyilin.ui.news.NewsFragment"
         android:label="@string/title_news"
         tools:layout="@layout/fragment_news" />
 
     <fragment
         android:id="@+id/navigation_data"
-        android:name="com.example.syscovid19.ui.data.DataFragment"
+        android:name="com.java.youyilin.ui.data.DataFragment"
         android:label="@string/title_data"
         tools:layout="@layout/fragment_data" />
 
     <fragment
         android:id="@+id/navigation_graph"
-        android:name="com.example.syscovid19.ui.graph.GraphFragment"
+        android:name="com.java.youyilin.ui.graph.GraphFragment"
         android:label="@string/title_graph"
         tools:layout="@layout/fragment_graph" />
 </navigation>

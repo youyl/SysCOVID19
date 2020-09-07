@@ -1,4 +1,4 @@
-package com.example.syscovid19.ui.data;
+package com.java.youyilin.ui.data;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

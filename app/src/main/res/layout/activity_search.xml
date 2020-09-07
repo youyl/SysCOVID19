@@ -41,6 +41,7 @@
         android:id="@+id/search_history_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/search_top_bar"
         android:visibility="gone"
         />
@@ -49,7 +50,7 @@
         android:id="@+id/search_fragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:name="com.example.syscovid19.ui.news.NewsList"
+        android:name="com.java.youyilin.ui.news.NewsList"
         app:layout_constraintTop_toBottomOf="@id/search_top_bar"
         app:layout_constraintBottom_toBottomOf="parent"
         />

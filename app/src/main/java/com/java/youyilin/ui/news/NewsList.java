@@ -1,11 +1,10 @@
-package com.example.syscovid19.ui.news;
+package com.java.youyilin.ui.news;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -17,13 +16,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.syscovid19.R;
+import com.java.youyilin.R;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -174,7 +172,7 @@ public class NewsList extends Fragment {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 lastItemShown=myLayoutManager.findLastVisibleItemPosition();
-                Log.d("Scroll Action Created",Integer.valueOf(lastItemShown).toString());
+                //Log.d("Scroll Action Created",Integer.valueOf(lastItemShown).toString());
             }
         });
         mySwipeRefresh.setRefreshing(true);

@@ -1,11 +1,11 @@
-package com.example.syscovid19;
+package com.java.youyilin;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.syscovid19.ui.news.GlobalCategory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.java.youyilin.ui.news.NewsDatabase;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    @Override
+    protected void onDestroy() {
+        NewsDatabase.getInstance().writeDB();
+        super.onDestroy();
     }
 
     @Override

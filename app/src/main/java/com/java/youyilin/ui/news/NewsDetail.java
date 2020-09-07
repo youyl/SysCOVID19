@@ -1,4 +1,4 @@
-package com.example.syscovid19.ui.news;
+package com.java.youyilin.ui.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.syscovid19.R;
-
-import org.w3c.dom.Text;
+import com.java.youyilin.R;
 
 public class NewsDetail extends AppCompatActivity
 {

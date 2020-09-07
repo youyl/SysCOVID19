@@ -1,4 +1,4 @@
-package com.example.syscovid19.ui.news;
+package com.java.youyilin.ui.news;
 
 public class NewsCategory
 {

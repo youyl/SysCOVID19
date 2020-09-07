@@ -1,4 +1,4 @@
-package com.example.syscovid19.ui.graph;
+package com.java.youyilin.ui.data;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,19 +12,19 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.syscovid19.R;
+import com.java.youyilin.R;
 
-public class GraphFragment extends Fragment {
+public class DataFragment extends Fragment {
 
-    private GraphViewModel graphViewModel;
+    private DataViewModel dataViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        graphViewModel =
-                ViewModelProviders.of(this).get(GraphViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_graph, container, false);
-        final TextView textView = root.findViewById(R.id.text_graph);
-        graphViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        dataViewModel =
+                ViewModelProviders.of(this).get(DataViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_data, container, false);
+        final TextView textView = root.findViewById(R.id.text_data);
+        dataViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

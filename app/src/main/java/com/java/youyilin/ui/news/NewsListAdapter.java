@@ -1,21 +1,16 @@
-package com.example.syscovid19.ui.news;
+package com.java.youyilin.ui.news;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.syscovid19.R;
-
-import org.w3c.dom.Text;
+import com.java.youyilin.R;
 
 import java.util.ArrayList;
 
