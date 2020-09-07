@@ -1,4 +1,4 @@
-package com.example.syscovid19.ui.news;
+package com.java.youyilin.ui.news;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.example.syscovid19.R;
+import com.java.youyilin.R;
 
 public class NewsFragment extends Fragment {
 

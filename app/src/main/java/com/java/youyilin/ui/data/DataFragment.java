@@ -1,4 +1,4 @@
-package com.example.syscovid19.ui.data;
+package com.java.youyilin.ui.data;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.syscovid19.R;
+import com.java.youyilin.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class DataFragment extends Fragment {

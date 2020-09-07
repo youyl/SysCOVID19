@@ -1,8 +1,8 @@
-package com.example.syscovid19.ui.graph;
+package com.java.youyilin.ui.graph;
 
 import android.util.Log;
 
-import com.example.syscovid19.ui.data.DataSubBackend;
+import com.java.youyilin.ui.data.DataSubBackend;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +25,31 @@ public class GraphBackend {
                     String body = DataSubBackend.getUrlBody(url);
                     if(body.equals("")) {
                         Log.d("warning","GraphBackend getResult failed. ");
+                        entity = null;
+                    }
+                    else{
+                        JSONObject jsonData = new JSONObject(body);
+                        JSONArray jsonArray = (JSONArray) jsonData.get("data");
+                        entity = jsonArray.getJSONObject(0);
+                    }
+                } catch(Exception e) {
+                    e.printStackTrace();
+                    entity = null;
+                }
+                return entity != null;
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static Single<Boolean> getLangResult(final String url, final String lang){
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                try {
+                    String fullUrl = "https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entity?url=" + url + "&lang=" + lang;
+                    String body = DataSubBackend.getUrlBody(fullUrl);
+                    if(body.equals("")) {
+                        Log.d("warning","GraphBackend getLangResult failed. ");
                         entity = null;
                     }
                     else{

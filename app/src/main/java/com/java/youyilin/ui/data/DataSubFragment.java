@@ -1,4 +1,4 @@
-package com.example.syscovid19.ui.data;
+package com.java.youyilin.ui.data;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -29,7 +29,7 @@ import com.bin.david.form.data.column.Column;
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat;
 import com.bin.david.form.data.table.PageTableData;
 import com.bin.david.form.data.table.TableData;
-import com.example.syscovid19.R;
+import com.java.youyilin.R;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;

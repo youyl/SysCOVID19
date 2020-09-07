@@ -1,4 +1,4 @@
-package com.example.syscovid19.ui.data;
+package com.java.youyilin.ui.data;
 
 import android.util.Log;
 

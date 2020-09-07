@@ -1,4 +1,4 @@
-package com.example.syscovid19;
+package com.java.youyilin;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.example.syscovid19.ui.data.DataLineBackend;
-import com.example.syscovid19.ui.data.DataSubBackend;
+import com.java.youyilin.ui.data.DataLineBackend;
+import com.java.youyilin.ui.data.DataSubBackend;
 
 import io.reactivex.functions.Consumer;
 

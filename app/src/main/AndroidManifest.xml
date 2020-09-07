@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.syscovid19">
+    package="com.java.youyilin">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,10 +16,10 @@
             android:resource="@drawable/property_corner" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.java.youyilin.MainActivity"
             android:label="@string/title_activity_main" />
         <activity
-            android:name=".CreateActivity"
+            android:name="com.java.youyilin.CreateActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

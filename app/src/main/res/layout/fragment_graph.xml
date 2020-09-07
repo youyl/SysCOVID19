@@ -1,129 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_horizontal_margin"
-    tools:context=".ui.graph.GraphFragment"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/search_corner"
-        android:orientation="horizontal"
-        android:layout_marginVertical="@dimen/activity_vertical_margin"
-        android:paddingHorizontal="@dimen/activity_horizontal_margin"
-        android:paddingVertical="4dp">
-
-        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="请输入实体名称"
-            android:singleLine="true"
-            android:imeOptions="actionSearch"
-            android:drawableLeft="@drawable/search"
-            android:drawablePadding="8dp"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_entity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        tools:context=".ui.graph.GraphFragment"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/search_corner"
             android:orientation="horizontal"
-            android:layout_marginVertical="@dimen/activity_vertical_margin">
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
+            android:paddingHorizontal="@dimen/activity_horizontal_margin"
+            android:paddingVertical="4dp">
+
+            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/search_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="请输入实体名称"
+                android:singleLine="true"
+                android:imeOptions="actionSearch"
+                android:drawableLeft="@drawable/search"
+                android:drawablePadding="8dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_entity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal"
+                android:layout_marginVertical="@dimen/activity_vertical_margin">
 
-                <TextView
-                    android:id="@+id/entity_name"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24dp">
-                </TextView>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/entity_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24dp">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="实体"
+                        android:textSize="8dp">
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/entity_abstract"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    </TextView>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/entity_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </ImageView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_relation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="@dimen/activity_vertical_margin">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="实体"
+                    android:text="关系"
                     android:textSize="8dp">
                 </TextView>
 
-                <TextView
-                    android:id="@+id/entity_abstract"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                </TextView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_relation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical" />
+
+                <Button
+                    android:id="@+id/button_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="查看更多"/>
+
+                <Button
+                    android:id="@+id/button_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="收起"/>
+
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/entity_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-            </ImageView>
+            <LinearLayout
+                android:id="@+id/layout_property"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="@dimen/activity_vertical_margin">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="属性"
+                    android:textSize="8dp">
+                </TextView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_property"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
         </LinearLayout>
 
-        <!--
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_entity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:scrollbars="vertical" />
-            -->
-
         <LinearLayout
-            android:id="@+id/layout_property"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginVertical="@dimen/activity_vertical_margin">
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_bottom_margin">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="属性"
-                android:textSize="8dp">
-            </TextView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_property"
+                android:id="@+id/graph_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="vertical" />
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:textSize="24dp"
+                android:gravity="center"
+                android:text="@string/graph_title" />
+
+            <TextView
+                android:id="@+id/graph_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/graph_text" />
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginBottom="@dimen/activity_bottom_margin">
-
-        <TextView
-            android:id="@+id/graph_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:textSize="24dp"
-            android:gravity="center"
-            android:text="@string/graph_title" />
-
-        <TextView
-            android:id="@+id/graph_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/graph_text" />
-    </LinearLayout>
-</LinearLayout>
+</ScrollView>
