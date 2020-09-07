@@ -25,18 +25,8 @@ public class CreateActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
-        // delay for initiation
-        final long endTime = System.currentTimeMillis() + 5 * 1000;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (get() < 2 &&  System.currentTimeMillis() < endTime);
-                Intent mainIntent = new Intent(CreateActivity.this, MainActivity.class);
-                startActivity(mainIntent);
-                finish();
-            }
-        });
-        thread.start();
+        DataSubBackend.getInstance(0).stringArray = getResources().getStringArray(R.array.data_china);
+        DataSubBackend.getInstance(1).stringArray = getResources().getStringArray(R.array.data_world);
         DataSubBackend.getInstance(0).refreshData().subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
@@ -51,6 +41,18 @@ public class CreateActivity extends Activity {
         });
         DataSubBackend.getInstance(1).refreshData();
         DataLineBackend.getInstance(1).fetchData("");
+        // delay for initiation
+        final long endTime = System.currentTimeMillis() + 5 * 1000;
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (get() < 2 &&  System.currentTimeMillis() < endTime);
+                Intent mainIntent = new Intent(CreateActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                finish();
+            }
+        });
+        thread.start();
     }
 
 }

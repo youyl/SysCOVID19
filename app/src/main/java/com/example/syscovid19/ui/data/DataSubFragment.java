@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,7 +57,6 @@ public class DataSubFragment extends Fragment {
     private int checked = -1;
     private SmartTable table;
     private LineChart lineChart;
-    private Button button;
 
     DataSubFragment(DataSubBackend d, DataLineBackend l) {
         dataSubBackend = d;
@@ -94,9 +92,9 @@ public class DataSubFragment extends Fragment {
             public void accept(Boolean aBoolean) throws Exception {
                 if (aBoolean){
                     checked = -1;
-                    dataSubBackend.all = false;
                     table.setData(dataSubBackend.getDataItemList());
-                    button.setVisibility(Button.VISIBLE);
+                    table.setVisibility(View.VISIBLE);
+                    lineChart.setVisibility(View.VISIBLE);
                     fetchLineChart();
                 }
                 else{
@@ -140,6 +138,7 @@ public class DataSubFragment extends Fragment {
                     }
                     lineChart.getAxisLeft().setAxisMaximum(maxx + 1);
                     lineChart.notifyDataSetChanged();
+                    lineChart.setVisibility(View.VISIBLE);
                     lineChart.invalidate();
                     adapter.notifyDataSetChanged();
                 }
@@ -160,12 +159,9 @@ public class DataSubFragment extends Fragment {
                 case 0:
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_smart_table, parent, false);
                     return new SmartTableViewHolder(view);
-                case 1:
+                default:
                     view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_line_chart, parent, false);
                     return new LineChartViewHolder(view);
-                default:
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_button, parent, false);
-                    return new ButtonViewHolder(view);
             }
         }
 
@@ -177,23 +173,18 @@ public class DataSubFragment extends Fragment {
                     lineChart = ((LineChartViewHolder) holder).chart;
                     createLineChart();
                     break;
-                case 1:
+                default:
                     table = ((SmartTableViewHolder) holder).table;
                     createTable();
-                    break;
-                default:
-                    button = ((ButtonViewHolder) holder).button;
-                    button.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dataSubBackend.all = true;
-                            button.setVisibility(View.INVISIBLE);
-                            table.setData(dataSubBackend.getDataItemList());
-                            adapter.notifyDataSetChanged();
-                        }
-                    });
-                    if (dataSubBackend.getDataItemList().size() == 0)
-                        button.setVisibility(Button.INVISIBLE);
+                    if (dataSubBackend.getDataItemList().size() == 0) {
+                        table.setVisibility(View.INVISIBLE);
+                        lineChart.setVisibility(View.INVISIBLE);
+                        refreshData();
+                    }
+                    else{
+                        if (dataLineBackend.getConfirmedList() == null)
+                            fetchLineChart();
+                    }
             }
         }
 
@@ -230,9 +221,6 @@ public class DataSubFragment extends Fragment {
                 }
             });
             table.setTableData(tableData);
-
-            if (list.size() == 0)
-                refreshData();
         }
 
         private void createLineChart(){
@@ -327,9 +315,6 @@ public class DataSubFragment extends Fragment {
             lineChart.animateX(1 * 1000);
             //图标刷新
             lineChart.invalidate();
-
-            if (list == null)
-                fetchLineChart();
         }
 
         @Override
@@ -337,16 +322,14 @@ public class DataSubFragment extends Fragment {
             switch(position){
                 case 0:
                     return 1;
-                case 1:
-                    return 0;
                 default:
-                    return 2;
+                    return 0;
             }
         }
 
         @Override
         public int getItemCount() {
-            return 3;
+            return 2;
         }
     }
 
@@ -357,16 +340,6 @@ public class DataSubFragment extends Fragment {
         public SmartTableViewHolder(@NonNull View itemView) {
             super(itemView);
             table = (SmartTable) itemView.findViewById(R.id.smart_table);
-        }
-    }
-
-    class ButtonViewHolder extends ViewHolder {
-
-        Button button;
-
-        public ButtonViewHolder(@NonNull View itemView) {
-            super(itemView);
-            button = (Button) itemView.findViewById(R.id.button);
         }
     }
 

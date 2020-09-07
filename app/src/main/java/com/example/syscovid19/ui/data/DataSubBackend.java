@@ -14,11 +14,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,8 +23,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DataSubBackend {
     protected List<DataItem> dataItemList;
-    protected boolean all;
     private int mode;
+    public String[] stringArray;
     private static DataSubBackend[] _instance = {new DataSubBackend(0), new DataSubBackend(1)};
 
     public static DataSubBackend getInstance(int i){
@@ -52,16 +49,12 @@ public class DataSubBackend {
                         if (mode == 0)
                             Log.d("warning","Domestic dataSubBackend fetchData failed. ");
                         else
-                            Log.d("warning","Foreign dataSubBackend fetchData failed. ");
+                            Log.d("warning","World dataSubBackend fetchData failed. ");
                         dataItemList =  new ArrayList<>();
+                    }else{
+                        JSONObject jsonData = new JSONObject(body);
+                        dataItemList = getDataItemList(jsonData);
                     }
-                    JSONObject jsonData = new JSONObject(body);
-                    String pattern;
-                    if (mode == 0)
-                        pattern = "^China\\|([^\\|]+)$";
-                    else
-                        pattern = "^(?!World)([^\\|]+)$";
-                    dataItemList = getDataItemList(jsonData, pattern);
                 } catch(Exception e) {
                     e.printStackTrace();
                     dataItemList = null;
@@ -74,12 +67,10 @@ public class DataSubBackend {
     public List<DataItem> getDataItemList(){
         if (dataItemList == null)
             return new ArrayList<>();
-        if (all)
-            return dataItemList;
-        return dataItemList.subList(0, 10);
+        return dataItemList;
     }
 
-    static String getUrlBody(String url) throws IOException {
+    public static String getUrlBody(String url) throws IOException {
         URL cs = new URL(url);
         URLConnection tc = cs.openConnection();
         tc.setConnectTimeout(10 * 1000);
@@ -91,15 +82,14 @@ public class DataSubBackend {
         return body;
     }
 
-    static List<DataItem> getDataItemList(JSONObject jsonData, String pattern) throws JSONException {
+    List<DataItem> getDataItemList(JSONObject jsonData) throws JSONException {
         List<DataItem> dataItemList = new ArrayList<>();
-        for (Iterator<String> it = jsonData.keys(); it.hasNext(); ) {
-            String k = it.next();
-            Pattern r = Pattern.compile(pattern);
-            Matcher m = r.matcher(k);
-            if (m.find()){
+        for (String k:stringArray) {
                 DataItem item = new DataItem();
-                item.name = m.group(1);
+                if (mode == 0)
+                    item.name = k.substring(6);
+                else
+                    item.name = k;
                 JSONArray jsonArray = (JSONArray) jsonData.getJSONObject(k).get("data");
                 JSONArray dataArray = jsonArray.getJSONArray(jsonArray.length() - 1);
                 item.confirmed = dataArray.getInt(0);
@@ -108,7 +98,6 @@ public class DataSubBackend {
                 item.now = item.confirmed - item.cured - item.dead;
                 dataItemList.add(item);
             }
-        }
         Collections.sort(dataItemList, new Comparator<DataItem>() {
             public int compare(DataItem o1, DataItem o2) {
                 return new Integer(o2.now).compareTo(o1.now);

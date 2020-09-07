@@ -17,7 +17,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class DataFragment extends Fragment {
 
-    private final String[] TITLES = new String[] {"国内疫情数据", "国外疫情数据"};
+    private final String[] TITLES = new String[] {"国内疫情数据", "全球疫情数据"};
     private DataPagerAdapter pagerAdapter;
 
     @Override
