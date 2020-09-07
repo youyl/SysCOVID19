@@ -1,6 +1,8 @@
 package com.example.syscovid19.ui.graph;
 
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,14 +24,21 @@ import com.example.syscovid19.R;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import io.reactivex.functions.Consumer;
 
 public class GraphFragment extends Fragment {
 
-    private TextView name, abstractInfo;
-    private ImageView image;
-    private RecyclerView recyclerView;
+    private TextView entityName, abstractInfo;
+    private ImageView entityImage;
+    private LinearLayout layoutEntity;
+    private LinearLayout layoutProperty;
     public final static String[] abstractWebsite = {"enwiki", "baidu", "zhwiki"};
+    private ArrayList<String> propertyName = new ArrayList<>();
+    private ArrayList<String> propertyDetail = new ArrayList<>();
+    private PropertyAdapter propertyAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,10 +55,11 @@ public class GraphFragment extends Fragment {
                         @Override
                         public void accept(Boolean aBoolean) throws Exception {
                             if (aBoolean){
-                                recyclerView.setVisibility(View.VISIBLE);
+                                layoutEntity.setVisibility(View.VISIBLE);
                                 JSONObject entity = GraphBackend.entity;
-                                name.setText(entity.getString("label"));
+                                entityName.setText(entity.getString("label"));
                                 JSONObject abstractObject = entity.getJSONObject("abstractInfo");
+                                abstractInfo.setText("");
                                 for (String website: abstractWebsite){
                                     String text = abstractObject.getString(website);
                                     if (text.length() > 0){
@@ -56,9 +67,27 @@ public class GraphFragment extends Fragment {
                                         break;
                                     }
                                 }
+                                JSONObject detailObject = abstractObject.getJSONObject("COVID");
+                                JSONObject propertyObject = detailObject.getJSONObject("properties");
+                                propertyName = new ArrayList<>();
+                                propertyDetail = new ArrayList<>();
+                                Iterator<String> iter = propertyObject.keys();
+                                while (iter.hasNext()) {
+                                    String n = iter.next();
+                                    String d = propertyObject.getString(n);
+                                    if (d != null && d.length() > 0){
+                                        propertyName.add(n);
+                                        propertyDetail.add(d);
+                                    }
+                                }
+                                if (propertyName.size() == 0)
+                                    layoutProperty.setVisibility(View.GONE);
+                                else
+                                    layoutProperty.setVisibility(View.VISIBLE);
+                                propertyAdapter.notifyDataSetChanged();
                             }
                             else {
-                                recyclerView.setVisibility(View.INVISIBLE);
+                                layoutEntity.setVisibility(View.GONE);
                                 Toast.makeText(getContext(), "获取疫情图谱失败", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -69,60 +98,71 @@ public class GraphFragment extends Fragment {
                 return false;
             }
         });
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(layoutManager);
-        GraphAdapter graphAdapter = new GraphAdapter();
-        recyclerView.setAdapter(graphAdapter);
-        recyclerView.setVisibility(View.INVISIBLE);
+        RecyclerView recyclerProperty = (RecyclerView) root.findViewById(R.id.recycler_property);
+        recyclerProperty.setLayoutManager(layoutManager);
+        propertyAdapter = new PropertyAdapter();
+        recyclerProperty.setAdapter(propertyAdapter);
+        recyclerProperty.addItemDecoration(new PropertyDecoration());
+
+        layoutEntity = (LinearLayout)root.findViewById(R.id.layout_entity);
+        layoutEntity.setVisibility(View.GONE);
+        layoutProperty = (LinearLayout)root.findViewById(R.id.layout_property);
+
+        entityName = (TextView)root.findViewById(R.id.entity_name);
+        abstractInfo = (TextView)root.findViewById(R.id.entity_abstract);
+        entityImage = (ImageView)root.findViewById(R.id.entity_image);
         return root;
     }
 
-    class GraphAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    class PropertyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view;
-            switch (viewType) {
-                default:
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_entity, parent, false);
-                    return new EntityViewHolder(view);
-            }
+            Log.v("test", "GraphFragment onCreateViewHolder. ");
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_property, parent, false);
+            return new PropertyViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            switch(position){
-                default:
-                    EntityViewHolder h = (EntityViewHolder)holder;
-                    name = h.name;
-                    abstractInfo = h.abstractInfo;
-                    image = h.image;
-            }
+            Log.v("test", "GraphFragment onBindViewHolder. ");
+            PropertyViewHolder h = (PropertyViewHolder)holder;
+            h.name.setText(propertyName.get(position));
+            h.detail.setText(propertyDetail.get(position));
         }
 
         @Override
         public int getItemViewType(int position) {
-            return position;
+            return 0;
         }
 
         @Override
         public int getItemCount() {
-            return 1;
+            return propertyName.size();
+        }
+
+    }
+
+    class PropertyViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView name, detail;
+
+        public PropertyViewHolder(@NonNull View itemView) {
+            super(itemView);
+            name = (TextView) itemView.findViewById(R.id.property_name);
+            detail = (TextView) itemView.findViewById(R.id.property_detail);
         }
     }
 
-    class EntityViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView name, abstractInfo;
-        private ImageView image;
-
-        public EntityViewHolder(@NonNull View itemView) {
-            super(itemView);
-            name = (TextView) itemView.findViewById(R.id.entity_name);
-            abstractInfo = (TextView) itemView.findViewById(R.id.entity_abstract);
-            image = (ImageView) itemView.findViewById(R.id.entity_image);
+    class PropertyDecoration extends RecyclerView.ItemDecoration {
+        //设置ItemView的内嵌偏移长度（inset）
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            outRect.set(0, 8, 0, 8);
         }
     }
 }

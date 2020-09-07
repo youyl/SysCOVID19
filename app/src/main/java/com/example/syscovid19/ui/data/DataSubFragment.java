@@ -79,7 +79,7 @@ public class DataSubFragment extends Fragment {
             }
         });
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) root.findViewById(R.id.recycler_data);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new DataAdapter();
         recyclerView.setAdapter(adapter);
@@ -177,8 +177,8 @@ public class DataSubFragment extends Fragment {
                     table = ((SmartTableViewHolder) holder).table;
                     createTable();
                     if (dataSubBackend.getDataItemList().size() == 0) {
-                        table.setVisibility(View.INVISIBLE);
-                        lineChart.setVisibility(View.INVISIBLE);
+                        table.setVisibility(View.GONE);
+                        lineChart.setVisibility(View.GONE);
                         refreshData();
                     }
                     else{

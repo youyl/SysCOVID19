@@ -29,6 +29,7 @@ public class GraphBackend {
                     }
                     else{
                         JSONObject jsonData = new JSONObject(body);
+                        Log.v("test", body);
                         JSONArray jsonArray = (JSONArray) jsonData.get("data");
                         entity = jsonArray.getJSONObject(0);
                     }

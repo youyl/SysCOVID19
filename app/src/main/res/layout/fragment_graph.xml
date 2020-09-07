@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/activity_horizontal_margin"
     tools:context=".ui.graph.GraphFragment"
     android:orientation="vertical">
@@ -13,7 +12,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/search_corner"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginVertical="@dimen/activity_vertical_margin"
         android:paddingHorizontal="@dimen/activity_horizontal_margin"
         android:paddingVertical="4dp">
 
@@ -28,26 +27,103 @@
             android:drawablePadding="8dp"/>
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout
+        android:id="@+id/layout_entity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:scrollbars="vertical" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/graph_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:textSize="24dp"
-        android:gravity="center"
-        android:text="@string/graph_title" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="@dimen/activity_vertical_margin">
 
-    <TextView
-        android:id="@+id/graph_text"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/entity_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24dp">
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="实体"
+                    android:textSize="8dp">
+                </TextView>
+
+                <TextView
+                    android:id="@+id/entity_abstract"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/entity_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ImageView>
+
+        </LinearLayout>
+
+        <!--
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_entity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:scrollbars="vertical" />
+            -->
+
+        <LinearLayout
+            android:id="@+id/layout_property"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginVertical="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="属性"
+                android:textSize="8dp">
+            </TextView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_property"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_bottom_margin"
-        android:text="@string/graph_text" />
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/activity_bottom_margin">
+
+        <TextView
+            android:id="@+id/graph_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:textSize="24dp"
+            android:gravity="center"
+            android:text="@string/graph_title" />
+
+        <TextView
+            android:id="@+id/graph_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/graph_text" />
+    </LinearLayout>
 </LinearLayout>
