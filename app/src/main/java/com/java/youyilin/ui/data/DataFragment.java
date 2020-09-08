@@ -1,7 +1,6 @@
 package com.java.youyilin.ui.data;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.java.youyilin.R;
 import com.google.android.material.tabs.TabLayout;
+import com.java.youyilin.R;
 
 public class DataFragment extends Fragment {
 
@@ -22,7 +21,6 @@ public class DataFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.v("test", "DataFragment onCreate. ");
         super.onCreate(savedInstanceState);
         pagerAdapter = new DataPagerAdapter(getChildFragmentManager());
     }
@@ -50,7 +48,6 @@ public class DataFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            Log.v("test", "DataPagerAdapter getItem " + String.valueOf(position) + ". ");
             return new DataSubFragment(DataSubBackend.getInstance(position), DataLineBackend.getInstance(position));
         }
 

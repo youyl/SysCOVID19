@@ -15,55 +15,50 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.concurrent.Callable;
 
-import io.reactivex.Single;
+import io.reactivex.Maybe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class GraphBackend {
-    public static JSONObject entity;
-    public static Bitmap image;
 
-    public static Single<Boolean> getResult(final String keyWord){
-        return Single.fromCallable(new Callable<Boolean>() {
+    public static Maybe<JSONArray> getResult(final String keyWord){
+        return Maybe.fromCallable(new Callable<JSONArray>() {
             @Override
-            public Boolean call() throws Exception {
+            public JSONArray call() throws Exception {
                 try {
                     String url = "https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entityquery?entity=" + keyWord;
                     String body = DataSubBackend.getUrlBody(url);
                     if(body.equals("")) {
                         Log.d("warning","GraphBackend getResult failed. ");
-                        entity = null;
+                        return null;
                     }
                     else{
                         JSONObject jsonData = new JSONObject(body);
-                        JSONArray jsonArray = (JSONArray) jsonData.get("data");
-                        entity = jsonArray.getJSONObject(0);
+                        return (JSONArray)jsonData.get("data");
                     }
                 } catch(Exception e) {
                     e.printStackTrace();
-                    entity = null;
+                    return null;
                 }
-                return entity != null;
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Single<Boolean> getBitmapFromURL(final String src) {
-        return Single.fromCallable(new Callable<Boolean>() {
+    public static Maybe<Bitmap> getBitmapFromURL(final String src) {
+        return Maybe.fromCallable(new Callable<Bitmap>() {
             @Override
-            public Boolean call() {
+            public Bitmap call() {
                 try {
                     URL url = new URL(src);
                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                     connection.setDoInput(true);
                     connection.connect();
                     InputStream input = connection.getInputStream();
-                    image = BitmapFactory.decodeStream(input);
+                    return BitmapFactory.decodeStream(input);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    image = null;
+                    return null;
                 }
-                return image != null;
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }

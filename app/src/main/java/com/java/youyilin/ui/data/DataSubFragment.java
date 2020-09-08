@@ -8,7 +8,6 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,6 @@ import com.bin.david.form.data.column.Column;
 import com.bin.david.form.data.format.bg.BaseCellBackgroundFormat;
 import com.bin.david.form.data.table.PageTableData;
 import com.bin.david.form.data.table.TableData;
-import com.java.youyilin.R;
 import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -43,6 +41,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.java.youyilin.R;
 
 import java.util.List;
 
@@ -66,7 +65,6 @@ public class DataSubFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.v("test", "DataSubFragment onCreateView. ");
         View root = inflater.inflate(R.layout.fragment_sub_data, container, false);
         // Inflate the layout for this fragment
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipe_refresh_layout);
@@ -167,7 +165,6 @@ public class DataSubFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Log.v("test", "DataSubFragment onBindViewHolder " + position + ". ");
             switch (position) {
                 case 0:
                     lineChart = ((LineChartViewHolder) holder).chart;
