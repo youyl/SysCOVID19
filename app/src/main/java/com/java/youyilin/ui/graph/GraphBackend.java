@@ -1,5 +1,7 @@
 package com.java.youyilin.ui.graph;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.java.youyilin.ui.data.DataSubBackend;
@@ -7,6 +9,10 @@ import com.java.youyilin.ui.data.DataSubBackend;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Single;
@@ -15,6 +21,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class GraphBackend {
     public static JSONObject entity;
+    public static Bitmap image;
 
     public static Single<Boolean> getResult(final String keyWord){
         return Single.fromCallable(new Callable<Boolean>() {
@@ -41,28 +48,22 @@ public class GraphBackend {
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Single<Boolean> getLangResult(final String url, final String lang){
+    public static Single<Boolean> getBitmapFromURL(final String src) {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
-            public Boolean call() throws Exception {
+            public Boolean call() {
                 try {
-                    String fullUrl = "https://innovaapi.aminer.cn/covid/api/v1/pneumonia/entity?url=" + url + "&lang=" + lang;
-                    String body = DataSubBackend.getUrlBody(fullUrl);
-                    if(body.equals("")) {
-                        Log.d("warning","GraphBackend getLangResult failed. ");
-                        entity = null;
-                    }
-                    else{
-                        JSONObject jsonData = new JSONObject(body);
-                        Log.v("test", body);
-                        JSONArray jsonArray = (JSONArray) jsonData.get("data");
-                        entity = jsonArray.getJSONObject(0);
-                    }
-                } catch(Exception e) {
+                    URL url = new URL(src);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    image = BitmapFactory.decodeStream(input);
+                } catch (IOException e) {
                     e.printStackTrace();
-                    entity = null;
+                    image = null;
                 }
-                return entity != null;
+                return image != null;
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
