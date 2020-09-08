@@ -133,7 +133,10 @@ public class GraphFragment extends Fragment {
             JSONArray relationArray = detailObject.getJSONArray("relations");
             ArrayList<Relation> aRelationList = new ArrayList<>();
             if (relationArray.length() > 0){
-                for (int j = 0; j < relationArray.length(); j ++){
+                int num = relationArray.length();
+                if (num > 150)
+                    num = 150;
+                for (int j = 0; j < num; j ++){
                     JSONObject object = (JSONObject) relationArray.get(j);
                     aRelationList.add(new Relation(object.getString("relation"), object.getBoolean("forward"), object.getString("label"), object.getString("url")));
                 }

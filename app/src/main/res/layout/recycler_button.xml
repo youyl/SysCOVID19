@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/grayAccent"
         android:layout_gravity="center_horizontal"
-        android:minHeight="0dp"/>
+        android:minHeight="0dp"
+        style="?android:attr/borderlessButtonStyle"/>
 
 </LinearLayout>
