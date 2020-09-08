@@ -182,9 +182,11 @@ public class NewsList extends Fragment {
 
     public void refresh()
     {
+        mySwipeRefresh.setRefreshing(true);
         curPage++;
-        if(curPage>6)curPage-=6;
-        if(myTitle.equals(new String("offline")))curPage=1;
+        curChunk=1;
+        if(curPage>5)curPage-=5;
+        if(isOffline())curPage=1;
         refreshNews(curPage).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
@@ -207,8 +209,8 @@ public class NewsList extends Fragment {
 
     public void append()
     {
-        curChunk+=6;
-        if(myTitle.equals(new String("offline")))curChunk-=5;
+        curChunk+=5;
+        if(isOffline())curChunk-=4;
         refreshNews(curChunk).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {

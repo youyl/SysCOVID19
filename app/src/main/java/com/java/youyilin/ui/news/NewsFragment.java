@@ -40,6 +40,7 @@ public class NewsFragment extends Fragment {
         myTabLayout.addTab(myTabLayout.newTab());
         myTabLayout.addTab(myTabLayout.newTab());
         myTabLayout.addTab(myTabLayout.newTab());
+        myTabLayout.addTab(myTabLayout.newTab());
         myViewPager.setAdapter(myPageAdapter);
         myTabLayout.setupWithViewPager(myViewPager);
         ImageButton search_btn=(ImageButton)root.findViewById(R.id.search_button);
