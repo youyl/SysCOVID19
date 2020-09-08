@@ -57,11 +57,11 @@ public class GraphFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    GraphBackend.getResult(v.getText().toString()).subscribe(new Consumer<JSONArray>() {
+                    GraphBackend.getResult(v.getText().toString()).subscribe(new Consumer<Boolean>() {
                         @Override
-                        public void accept(JSONArray array) throws Exception {
-                            if (array != null){
-                                refreshGraph(array);
+                        public void accept(Boolean aBoolean) throws Exception {
+                            if (aBoolean){
+                                refreshGraph();
                             }
                             else {
                                 layoutGraph.setVisibility(View.GONE);
@@ -93,9 +93,10 @@ public class GraphFragment extends Fragment {
         return root;
     }
 
-    private void refreshGraph(JSONArray entityArray) throws JSONException {
+    private void refreshGraph() throws JSONException {
         layoutGraph.setVisibility(View.VISIBLE);
 
+        JSONArray entityArray = GraphBackend.entityArray;
         entityList.clear();
         propertyList.clear();
         relationList.clear();
@@ -283,11 +284,11 @@ public class GraphFragment extends Fragment {
                 h.search.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        GraphBackend.getResult(r.label).subscribe(new Consumer<JSONArray>() {
+                        GraphBackend.getResult(r.label).subscribe(new Consumer<Boolean>() {
                             @Override
-                            public void accept(JSONArray array) throws Exception {
-                                if (array != null){
-                                    refreshGraph(array);
+                            public void accept(Boolean aBoolean) throws Exception {
+                                if (aBoolean){
+                                    refreshGraph();
                                 }
                                 else {
                                     layoutGraph.setVisibility(View.GONE);

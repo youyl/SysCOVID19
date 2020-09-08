@@ -212,9 +212,11 @@ public class DataSubFragment extends Fragment {
             tableData.setOnItemClickListener(new PageTableData.OnItemClickListener<Object>() {
                 @Override
                 public void onClick(Column column, String value, Object c, int col, int row) {
-                    DataSubFragment.this.checked = row;
-                    table.invalidate();
-                    fetchLineChart();
+                    if (DataSubFragment.this.checked != row){
+                        DataSubFragment.this.checked = row;
+                        table.invalidate();
+                        fetchLineChart();
+                    }
                 }
             });
             table.setTableData(tableData);
