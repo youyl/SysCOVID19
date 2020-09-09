@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
+import com.java.youyilin.ui.news.NewsDatabase;
+
 import com.java.youyilin.ui.data.DataLineBackend;
 import com.java.youyilin.ui.data.DataSubBackend;
 
@@ -25,6 +27,7 @@ public class CreateActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        NewsDatabase.getInstance().loadData(this);
         DataSubBackend.getInstance(0).stringArray = getResources().getStringArray(R.array.data_china);
         DataSubBackend.getInstance(1).stringArray = getResources().getStringArray(R.array.data_world);
         DataSubBackend.getInstance(0).refreshData().subscribe(new Consumer<Boolean>() {
