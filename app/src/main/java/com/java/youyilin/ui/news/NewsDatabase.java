@@ -12,6 +12,11 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class NewsDatabase
 {
@@ -35,64 +40,70 @@ public class NewsDatabase
         return instance;
     }
 
-    public void loadData(Context _context)
+    public Single<Boolean> loadData(final Context _context)
     {
-        pathNews=new StringBuilder().append(_context.getFilesDir().getPath()).append("/newsDataBase.json").toString();
-        pathSearch=new StringBuilder().append(_context.getFilesDir().getPath()).append("/searchDataBase.json").toString();
-        Log.d("DB Load Created",pathNews);
-        try
-        {
-            //getnewsjson
-            Scanner fin=new Scanner(new FileInputStream(pathNews));
-            StringBuilder content=new StringBuilder();
-            while (fin.hasNextLine())
-            {
-                content.append(fin.nextLine());
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                pathNews=new StringBuilder().append(_context.getFilesDir().getPath()).append("/newsDataBase.json").toString();
+                pathSearch=new StringBuilder().append(_context.getFilesDir().getPath()).append("/searchDataBase.json").toString();
+                Log.d("DB Load Created",pathNews);
+                try
+                {
+                    //getnewsjson
+                    Scanner fin=new Scanner(new FileInputStream(pathNews));
+                    StringBuilder content=new StringBuilder();
+                    while (fin.hasNextLine())
+                    {
+                        content.append(fin.nextLine());
+                    }
+                    fin.close();
+                    JSONArray dataObj=new JSONObject(content.toString()).getJSONArray("data");
+                    //json2array
+                    for (int i=0;i<dataObj.length();i++)
+                    {
+                        JSONObject newsObj=dataObj.getJSONObject(i);
+                        String title=newsObj.getString("title");
+                        String newsType=newsObj.getString("type");
+                        String id=newsObj.getString("id");
+                        String source=newsObj.getString("source");
+                        String date=newsObj.getString("date");
+                        String newscontent=newsObj.getString("content");
+                        cachedNews.add(id);
+                        cachedData.add(new NewsData(title,date,source,id,newsType));
+                        cachedDataDetail.add(newscontent);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.d("NewsDB Load Error Created","Created!");
+                }
+                try
+                {
+                    //getsearchjson
+                    Scanner fin=new Scanner(new FileInputStream(pathSearch));
+                    StringBuilder content=new StringBuilder();
+                    while (fin.hasNextLine())
+                    {
+                        content.append(fin.nextLine());
+                    }
+                    fin.close();
+                    JSONArray dataObj=new JSONObject(content.toString()).getJSONArray("data");
+                    //json2array
+                    for (int i=0;i<dataObj.length();i++)
+                    {
+                        JSONObject newsObj=dataObj.getJSONObject(i);
+                        String title=newsObj.getString("content");
+                        searchHistory.add(title);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.d("SearchDB Load Error Created","Created!");
+                }
+                return true;
             }
-            fin.close();
-            JSONArray dataObj=new JSONObject(content.toString()).getJSONArray("data");
-            //json2array
-            for (int i=0;i<dataObj.length();i++)
-            {
-                JSONObject newsObj=dataObj.getJSONObject(i);
-                String title=newsObj.getString("title");
-                String newsType=newsObj.getString("type");
-                String id=newsObj.getString("id");
-                String source=newsObj.getString("source");
-                String date=newsObj.getString("date");
-                String newscontent=newsObj.getString("content");
-                cachedNews.add(id);
-                cachedData.add(new NewsData(title,date,source,id,newsType));
-                cachedDataDetail.add(newscontent);
-            }
-        }
-        catch (Exception e)
-        {
-            Log.d("NewsDB Load Error Created","Created!");
-        }
-        try
-        {
-            //getsearchjson
-            Scanner fin=new Scanner(new FileInputStream(pathSearch));
-            StringBuilder content=new StringBuilder();
-            while (fin.hasNextLine())
-            {
-                content.append(fin.nextLine());
-            }
-            fin.close();
-            JSONArray dataObj=new JSONObject(content.toString()).getJSONArray("data");
-            //json2array
-            for (int i=0;i<dataObj.length();i++)
-            {
-                JSONObject newsObj=dataObj.getJSONObject(i);
-                String title=newsObj.getString("content");
-                searchHistory.add(title);
-            }
-        }
-        catch (Exception e)
-        {
-            Log.d("SearchDB Load Error Created","Created!");
-        }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public void writeDB() {
