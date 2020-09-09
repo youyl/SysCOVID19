@@ -22,4 +22,16 @@
         android:name="com.java.youyilin.ui.graph.GraphFragment"
         android:label="@string/title_graph"
         tools:layout="@layout/fragment_graph" />
+
+    <fragment
+        android:id="@+id/navigation_cluster"
+        android:name="com.java.youyilin.ui.cluster.ClusterFragment"
+        android:label="@string/title_cluster"
+        tools:layout="@layout/fragment_cluster" />
+
+    <fragment
+        android:id="@+id/navigation_scholar"
+        android:name="com.java.youyilin.ui.scholar.ScholarFragment"
+        android:label="@string/title_scholar"
+        tools:layout="@layout/fragment_scholar" />
 </navigation>
