@@ -16,4 +16,14 @@
         android:icon="@drawable/ic_baseline_policy_24"
         android:title="@string/title_graph" />
 
+    <item
+        android:id="@+id/navigation_cluster"
+        android:icon="@drawable/ic_baseline_group_work_24"
+        android:title="@string/title_cluster" />
+
+    <item
+        android:id="@+id/navigation_scholar"
+        android:icon="@drawable/ic_baseline_school_24"
+        android:title="@string/title_scholar" />
+
 </menu>
