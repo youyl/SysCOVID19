@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/relation_relation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="4dp"
+            android:layout_alignParentStart="true">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/relation_image_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:layout_centerInParent="true">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/relation_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="64dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:layout_toStartOf="@+id/relation_image_search"
+            android:layout_toEndOf="@+id/relation_image_forward">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/relation_image_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search_relation"
+            android:scaleType="fitEnd"
+            android:layout_alignParentRight="true">
+        </ImageView>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

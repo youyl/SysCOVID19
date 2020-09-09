@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="data_china">
+        <item>China|Hong Kong</item>
+        <item>China|Xinjiang</item>
+        <item>China|Beijing</item>
+        <item>China|Sichuan</item>
+        <item>China|Gansu</item>
+        <item>China|Shanghai</item>
+        <item>China|Guangdong</item>
+        <item>China|Taiwan</item>
+        <item>China|Hebei</item>
+        <item>China|Shaanxi</item>
+        <item>China|Shanxi</item>
+        <item>China|Yunnan</item>
+        <item>China|Chongqing</item>
+        <item>China|Inner Mongol</item>
+        <item>China|Shandong</item>
+        <item>China|Zhejiang</item>
+        <item>China|Tianjin</item>
+        <item>China|Liaoning</item>
+        <item>China|Fujian</item>
+        <item>China|Jiangsu</item>
+        <item>China|Hainan</item>
+        <item>China|Macao</item>
+        <item>China|Jilin</item>
+        <item>China|Hubei</item>
+        <item>China|Jiangxi</item>
+        <item>China|Heilongjiang</item>
+        <item>China|Anhui</item>
+        <item>China|Guizhou</item>
+        <item>China|Hunan</item>
+        <item>China|Henan</item>
+        <item>China|Guangxi</item>
+        <item>China|Ningxia</item>
+        <item>China|Qinghai</item>
+        <item>China|Xizang</item>
+    </string-array>
+</resources>
