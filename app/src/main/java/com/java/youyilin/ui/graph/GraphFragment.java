@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -51,7 +52,7 @@ public class GraphFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_graph, container, false);
         final AutoCompleteTextView searchView=(AutoCompleteTextView)root.findViewById(R.id.search_view);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.graph_entity));
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.graph_entity));
         searchView.setAdapter(arrayAdapter);
         searchView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -77,6 +78,27 @@ public class GraphFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GraphBackend.getResult(arrayAdapter.getItem(position)).subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean aBoolean) throws Exception {
+                        if (aBoolean){
+                            refreshGraph();
+                        }
+                        else {
+                            layoutGraph.setVisibility(View.GONE);
+                            Toast.makeText(getContext(), "获取疫情图谱失败", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                InputMethodManager manager = ((InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE));
+                if (manager != null)
+                    manager.hideSoftInputFromWindow(searchView.getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+                searchView.clearFocus();
             }
         });
 
@@ -301,17 +323,30 @@ public class GraphFragment extends Fragment {
                 return;
             }
             ButtonViewHolder h = (ButtonViewHolder)holder;
-            if (extendedList.get(i))
+            if (extendedList.get(i)) {
                 h.button.setText("展开");
-            else
+                h.button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        extendedList.set(i, !extendedList.get(i));
+                        notifyItemChanged(7);
+                        notifyItemRangeInserted(7, relationList.get(i).size() - 6 );
+
+                    }
+                });
+            }
+            else {
                 h.button.setText("收起");
-            h.button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    extendedList.set(i, !extendedList.get(i));
-                    notifyDataSetChanged();
-                }
-            });
+                h.button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        extendedList.set(i, !extendedList.get(i));
+                        notifyItemRangeRemoved(7, relationList.get(i).size() - 6 );
+                        notifyItemChanged(7);
+                    }
+                });
+            }
+
         }
 
         @Override
