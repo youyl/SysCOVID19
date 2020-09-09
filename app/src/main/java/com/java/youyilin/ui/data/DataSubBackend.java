@@ -2,6 +2,8 @@ package com.java.youyilin.ui.data;
 
 import android.util.Log;
 
+import com.github.mikephil.charting.data.Entry;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +24,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class DataSubBackend {
-    protected List<DataItem> dataItemList;
+    private List<DataItem> dataItemList;
     private int mode;
     public String[] stringArray;
     private static DataSubBackend[] _instance = {new DataSubBackend(0), new DataSubBackend(1)};
@@ -70,6 +72,12 @@ public class DataSubBackend {
         return dataItemList;
     }
 
+    public List<Entry> getConfirmedList(int i) {
+        if (dataItemList == null || dataItemList.size() <= i)
+            return null;
+        return dataItemList.get(i).confirmedList;
+    }
+
     public static String getUrlBody(String url) throws IOException {
         URL cs = new URL(url);
         URLConnection tc = cs.openConnection();
@@ -86,7 +94,7 @@ public class DataSubBackend {
         List<DataItem> dataItemList = new ArrayList<>();
         for (String k:stringArray) {
                 DataItem item = new DataItem();
-                if (mode == 0)
+                if (mode == 0 && !k.equals("China"))
                     item.name = k.substring(6);
                 else
                     item.name = k;
@@ -96,6 +104,23 @@ public class DataSubBackend {
                 item.cured = dataArray.getInt(2);
                 item.dead = dataArray.getInt(3);
                 item.now = item.confirmed - item.cured - item.dead;
+
+                item.confirmedList = new ArrayList<>();
+                final int num = 30;
+                int i = 0;
+                if (jsonArray.length() < num){
+                    for (i = 0; i < num - jsonArray.length(); i ++)
+                        item.confirmedList.add(new Entry(i, 0));
+                }
+                JSONArray dataJSONArray = jsonArray.getJSONArray(jsonArray.length() - num + i - 1);
+                int old_confirmed = dataJSONArray.getInt(0);
+                for (; i < num; i ++){
+                    dataJSONArray = jsonArray.getJSONArray(jsonArray.length() + i - num);
+                    int confirmed = dataJSONArray.getInt(0);
+                    item.confirmedList.add(new Entry(i, confirmed - old_confirmed));
+                    old_confirmed = confirmed;
+                }
+
                 dataItemList.add(item);
             }
         Collections.sort(dataItemList, new Comparator<DataItem>() {

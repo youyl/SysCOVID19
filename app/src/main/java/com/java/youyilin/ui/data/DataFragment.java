@@ -48,7 +48,7 @@ public class DataFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return new DataSubFragment(DataSubBackend.getInstance(position), DataLineBackend.getInstance(position));
+            return new DataSubFragment(DataSubBackend.getInstance(position));
         }
 
         @Override

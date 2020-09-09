@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="data_china">
+        <item>China</item>
         <item>China|Hong Kong</item>
         <item>China|Xinjiang</item>
         <item>China|Beijing</item>

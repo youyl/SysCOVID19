@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import com.java.youyilin.ui.news.NewsDatabase;
 
-import com.java.youyilin.ui.data.DataLineBackend;
 import com.java.youyilin.ui.data.DataSubBackend;
 
 import io.reactivex.functions.Consumer;
@@ -36,20 +35,13 @@ public class CreateActivity extends Activity {
                     add();
             }
         });
-        DataLineBackend.getInstance(0).fetchData("").subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                add();
-            }
-        });
         DataSubBackend.getInstance(1).refreshData();
-        DataLineBackend.getInstance(1).fetchData("");
         // delay for initiation
         final long endTime = System.currentTimeMillis() + 5 * 1000;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (get() < 2 &&  System.currentTimeMillis() < endTime);
+                while (get() < 1 &&  System.currentTimeMillis() < endTime);
                 Intent mainIntent = new Intent(CreateActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();

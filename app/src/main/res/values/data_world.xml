@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="data_world">
+        <item>World</item>
         <item>United States of America</item>
         <item>Brazil</item>
         <item>India</item>

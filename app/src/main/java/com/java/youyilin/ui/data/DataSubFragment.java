@@ -51,15 +51,13 @@ public class DataSubFragment extends Fragment {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private DataSubBackend dataSubBackend;
-    private DataLineBackend dataLineBackend;
     private DataAdapter adapter;
-    private int checked = -1;
+    private int checked = 0;
     private SmartTable table;
     private LineChart lineChart;
 
-    DataSubFragment(DataSubBackend d, DataLineBackend l) {
+    DataSubFragment(DataSubBackend d) {
         dataSubBackend = d;
-        dataLineBackend = l;
     }
 
     @Override
@@ -88,56 +86,10 @@ public class DataSubFragment extends Fragment {
         dataSubBackend.refreshData().subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
+                swipeRefreshLayout.setRefreshing(false);
                 if (aBoolean){
-                    checked = -1;
-                    table.setData(dataSubBackend.getDataItemList());
                     table.setVisibility(View.VISIBLE);
                     lineChart.setVisibility(View.VISIBLE);
-                    fetchLineChart();
-                }
-                else{
-                    swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(getContext(), "获取疫情数据失败", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    public void fetchLineChart(){
-        String name = "";
-        if (checked >= 0)
-            name = dataSubBackend.getDataItemList().get(checked).name;
-        dataLineBackend.fetchData(name).subscribe(new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) throws Exception {
-                swipeRefreshLayout.setRefreshing(false);
-                if (aBoolean) {
-                    final List<Entry> list = dataLineBackend.getConfirmedList();
-                    LineDataSet lineDataSet = new LineDataSet(list, "confirmed");
-                    lineDataSet.setColor(Color.parseColor("#F15A4A"));
-                    lineDataSet.setLineWidth(1.6f);
-                    lineDataSet.setDrawCircles(false);
-                    lineDataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
-
-                    LineData lineData = lineChart.getLineData();
-                    if (lineData != null){
-                        lineData.removeDataSet(0);
-                        lineData.addDataSet(lineDataSet);
-                    }
-                    else{
-                        lineData = new LineData(lineDataSet);
-                        lineData.setDrawValues(false);
-                        lineChart.setData(lineData);
-                    }
-                    int maxx = 0;
-                    for (Entry e : list) {
-                        if (e.getY() > maxx)
-                            maxx = (int) e.getY();
-                    }
-                    lineChart.getAxisLeft().setAxisMaximum(maxx + 1);
-                    lineChart.notifyDataSetChanged();
-                    lineChart.setVisibility(View.VISIBLE);
-                    lineChart.invalidate();
                     adapter.notifyDataSetChanged();
                 }
                 else{
@@ -178,10 +130,6 @@ public class DataSubFragment extends Fragment {
                         lineChart.setVisibility(View.GONE);
                         refreshData();
                     }
-                    else{
-                        if (dataLineBackend.getConfirmedList() == null)
-                            fetchLineChart();
-                    }
             }
         }
 
@@ -215,7 +163,7 @@ public class DataSubFragment extends Fragment {
                     if (DataSubFragment.this.checked != row){
                         DataSubFragment.this.checked = row;
                         table.invalidate();
-                        fetchLineChart();
+                        adapter.notifyItemChanged(0);
                     }
                 }
             });
@@ -228,7 +176,7 @@ public class DataSubFragment extends Fragment {
             //无数据时显示的文字
             lineChart.setNoDataText("暂无数据");
 
-            final List<Entry> list = dataLineBackend.getConfirmedList();
+            final List<Entry> list = dataSubBackend.getConfirmedList(checked);
             LineData data = null;
             if (list != null){
                 //一个LineDataSet就是一条线
@@ -312,8 +260,6 @@ public class DataSubFragment extends Fragment {
             lineChart.setData(data);
             //水平轴动画
             lineChart.animateX(1 * 1000);
-            //图标刷新
-            lineChart.invalidate();
         }
 
         @Override
@@ -464,7 +410,7 @@ public class DataSubFragment extends Fragment {
         //时间格式化（显示今日往前若干天的每一天日期）
         public String format(float x) {
             CharSequence format = DateFormat.format("MM月dd日",
-                    System.currentTimeMillis() - (long) (dataLineBackend.getConfirmedList().size() - (int) x) * 24 * 60 * 60 * 1000);
+                    System.currentTimeMillis() - (long) (30 - (int) x) * 24 * 60 * 60 * 1000);
             return format.toString();
         }
     }
