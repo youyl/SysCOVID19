@@ -2,9 +2,11 @@ package com.java.youyilin.ui.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,17 +30,7 @@ public class NewsDetail extends AppCompatActivity
         source=getIntent().getStringExtra("SOURCE");
         date=getIntent().getStringExtra("DATE");
 
-        Button btn=findViewById(R.id.detail_exit_btn);
-        btn.setOnClickListener(new View.OnClickListener()
-                               {
-                                   @Override
-                                   public void onClick(View view) {
-                                       finish();
-                                   }
-                               }
-        );
-
-        Button share=findViewById(R.id.share_btn);
+        ImageButton share=findViewById(R.id.share_btn);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

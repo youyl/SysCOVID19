@@ -73,6 +73,11 @@ public class NewsCrawler
                         String newsType=newsObj.getString("type");
                         String id=newsObj.getString("_id");
                         String source=newsObj.getString("source");
+                        if(source.isEmpty())
+                        {
+                            JSONObject authorObj=newsObj.getJSONArray("authors").getJSONObject(0);
+                            source=authorObj.getString("name");
+                        }
                         String date=newsObj.getString("time");
                         if(title.contains(keyword)) {
                             lst.add(new NewsData(title, date, source, id, newsType));
@@ -120,6 +125,11 @@ public class NewsCrawler
                         String id=newsObj.getString("_id");
                         String source=newsObj.getString("source");
                         String date=newsObj.getString("time");
+                        if(source.isEmpty())
+                        {
+                            JSONObject authorObj=newsObj.getJSONArray("authors").getJSONObject(0);
+                            source=authorObj.getString("name");
+                        }
                         lst.add(new NewsData(title,date,source,id,newsType));
                     }
 
@@ -132,7 +142,7 @@ public class NewsCrawler
 
     public String getNewsDetail(String id)
     {
-        String str=new String();
+        String str;
         try {
             String adr = new StringBuilder().append("https://covid-dashboard-api.aminer.cn/event/")
                     .append(id).toString();
@@ -140,8 +150,8 @@ public class NewsCrawler
             URL url = new URL(adr);
             HttpURLConnection path=(HttpURLConnection) url.openConnection();
             path.setRequestMethod("GET");
-            path.setConnectTimeout(5000);
-            path.setReadTimeout(5000);
+            path.setConnectTimeout(2000);
+            path.setReadTimeout(2000);
             path.connect();
 
             InputStream inputStream = path.getInputStream();
@@ -160,9 +170,48 @@ public class NewsCrawler
 
             JSONObject largeObj=new JSONObject(inputLine);
             JSONObject smallObj=largeObj.getJSONObject("data");
+            String urlsss=smallObj.getJSONArray("urls").getString(0);
+            Log.d("News Url catch Created",urlsss);
             str=smallObj.getString("content");
         }catch (Exception e){
             Log.d("DetailCrawler Create Error","Something Happend"); return null;}
+        return str;
+    }
+
+    public String getNewsUrl(String id)
+    {
+        String str;
+        try {
+            String adr = new StringBuilder().append("https://covid-dashboard-api.aminer.cn/event/")
+                    .append(id).toString();
+            Log.d("Url try Adr Created",adr);
+            URL url = new URL(adr);
+            HttpURLConnection path=(HttpURLConnection) url.openConnection();
+            path.setRequestMethod("GET");
+            path.setConnectTimeout(2000);
+            path.setReadTimeout(2000);
+            path.connect();
+
+            InputStream inputStream = path.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            StringBuilder jsonStr = new StringBuilder();
+            String inputLine;
+            while ((inputLine = bufferedReader.readLine()) != null)
+            {
+                jsonStr.append(inputLine);
+            }
+            bufferedReader.close();
+            inputStreamReader.close();
+            inputStream.close();
+            inputLine=jsonStr.toString();
+
+            JSONObject largeObj=new JSONObject(inputLine);
+            JSONObject smallObj=largeObj.getJSONObject("data");
+            str=smallObj.getJSONArray("urls").getString(0);
+            Log.d("News Url catch Created",str);
+        }catch (Exception e){
+            Log.d("UrlCrawler Create Error","Something Happend"); return null;}
         return str;
     }
 }
