@@ -26,9 +26,7 @@ public class ClusterDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         name=getIntent().getStringExtra("NAME");
         setContentView(R.layout.activity_cluster_detail);
-        getSupportActionBar().hide();
-        TextView text=findViewById(R.id.cluster_detail_title);
-        text.setText(name);
+        setTitle(name);
         detailview=findViewById(R.id.cluster_detail_list);
         mydetailadp=new CDetailAdapter(this,ClusterData.getInstance().getNewsList(name));
         detailview.setAdapter(mydetailadp);
