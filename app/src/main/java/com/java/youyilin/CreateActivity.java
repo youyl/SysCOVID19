@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.java.youyilin.ui.data.DataSubBackend;
 import com.java.youyilin.ui.news.NewsDatabase;
+import com.java.youyilin.ui.scholar.ScholarSubBackend;
 
 import io.reactivex.functions.Consumer;
 
@@ -43,12 +44,19 @@ public class CreateActivity extends Activity {
         });
         DataSubBackend.getInstance(1).refreshData();
 
+        ScholarSubBackend.getInstance().dealScholar(this).subscribe(new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) throws Exception {
+                add();
+            }
+        });
+
         // delay for initiation
         final long endTime = System.currentTimeMillis() + 5 * 1000;
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (get() < 2 &&  System.currentTimeMillis() < endTime);
+                while (get() < 3 &&  System.currentTimeMillis() < endTime);
                 Intent mainIntent = new Intent(CreateActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();

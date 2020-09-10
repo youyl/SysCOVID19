@@ -78,7 +78,6 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitCenter"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:layout_margin="8dp">
             </ImageView>
 

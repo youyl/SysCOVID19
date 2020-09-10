@@ -27,9 +27,10 @@
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@drawable/property_corner" />
-        <activity android:name="com.java.youyilin.ui.news.MenuActivity"></activity>
+        <activity android:name="com.java.youyilin.ui.news.MenuActivity" />
         <activity android:name="com.java.youyilin.ui.news.SearchActivity" />
         <activity android:name="com.java.youyilin.ui.news.NewsDetail" />
+        <activity android:name="com.java.youyilin.ui.scholar.ScholarDetail" />
 
         <activity
             android:name="com.java.youyilin.MainActivity"

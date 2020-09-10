@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="@color/grayAccent"
+    android:layout_marginVertical="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/scholar_image"
+            android:layout_width="120dp"
+            android:layout_height="160dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginVertical="@dimen/activity_vertical_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:scaleType="fitStart">
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toEndOf="@+id/scholar_image"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:layout_marginVertical="8dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"
+                    android:id="@+id/scholar_name"
+                    android:layout_toStartOf="@+id/scholar_button"
+                    android:layout_alignParentStart="true">
+                </TextView>
+
+                <Button
+                    android:id="@+id/scholar_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="详细分析"
+                    android:layout_alignParentEnd="true"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:padding="12dp">
+                </Button>
+            </RelativeLayout>
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:rowCount="3"
+                android:columnCount="2"
+                android:layout_marginVertical="8dp">
+
+                <LinearLayout
+                    android:layout_width="64dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/property_corner"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:padding="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:shadowColor="#E54404"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="2"
+                        android:textColor="@color/white"
+                        android:text="H"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:paddingHorizontal="4dp">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:background="@color/white"
+                        android:paddingVertical="2dp"
+                        android:id="@+id/scholar_hindex">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="64dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/property_corner"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:padding="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:shadowColor="#E54404"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="2"
+                        android:textColor="@color/white"
+                        android:text="A"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:paddingHorizontal="4dp">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:background="@color/white"
+                        android:paddingVertical="2dp"
+                        android:id="@+id/scholar_activity">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="64dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/property_corner"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:padding="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:shadowColor="#E54404"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="2"
+                        android:textColor="@color/white"
+                        android:text="S"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:paddingHorizontal="4dp">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:background="@color/white"
+                        android:paddingVertical="2dp"
+                        android:id="@+id/scholar_sociability">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="64dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/property_corner"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:padding="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:shadowColor="#E54404"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="2"
+                        android:textColor="@color/white"
+                        android:text="C"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:paddingHorizontal="4dp">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:background="@color/white"
+                        android:paddingVertical="2dp"
+                        android:id="@+id/scholar_citations">
+                    </TextView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="64dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/property_corner"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:padding="2dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="22dp"
+                        android:shadowColor="#E54404"
+                        android:shadowDx="4"
+                        android:shadowDy="4"
+                        android:shadowRadius="2"
+                        android:textColor="@color/white"
+                        android:text="P"
+                        android:textSize="14sp"
+                        android:textAlignment="center"
+                        android:paddingHorizontal="4dp">
+                    </TextView>
+
+                    <TextView
+                        android:layout_width="48dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:background="@color/white"
+                        android:paddingVertical="2dp"
+                        android:id="@+id/scholar_pubs">
+                    </TextView>
+                </LinearLayout>
+
+            </GridLayout>
+
+            <RelativeLayout
+                android:id="@+id/layout_position"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/scholar_position_image"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_baseline_account_circle_16"
+                    android:layout_alignParentStart="true">
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/scholar_position"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/scholar_position_image">
+                </TextView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/scholar_affiliation_image"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_baseline_account_balance_16"
+                    android:layout_alignParentStart="true">
+                </ImageView>
+
+                <TextView
+                    android:id="@+id/scholar_affiliation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/scholar_affiliation_image">
+                </TextView>
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

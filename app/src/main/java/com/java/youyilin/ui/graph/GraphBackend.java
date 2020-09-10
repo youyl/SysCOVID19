@@ -7,6 +7,7 @@ import android.util.Log;
 import com.java.youyilin.ui.data.DataSubBackend;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -66,5 +67,14 @@ public class GraphBackend {
                 }
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static String getJSONString(JSONObject object, String name){
+        try{
+            return object.getString(name);
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
