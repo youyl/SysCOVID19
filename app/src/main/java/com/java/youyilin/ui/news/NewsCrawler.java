@@ -72,13 +72,15 @@ public class NewsCrawler
                         String title=newsObj.getString("title");
                         String newsType=newsObj.getString("type");
                         String id=newsObj.getString("_id");
-                        String source=newsObj.getString("source");
-                        if(source.isEmpty())
-                        {
-                            JSONObject authorObj=newsObj.getJSONArray("authors").getJSONObject(0);
-                            source=authorObj.getString("name");
-                        }
                         String date=newsObj.getString("time");
+                        String source=new String();
+                        if(!newsType.equals("event")) {
+                            source = newsObj.getString("source");
+                            if (source.isEmpty()&&newsType.equals("paper")) {
+                                JSONObject authorObj = newsObj.getJSONArray("authors").getJSONObject(0);
+                                source = authorObj.getString("name");
+                            }
+                        }
                         if(title.contains(keyword)) {
                             lst.add(new NewsData(title, date, source, id, newsType));
                         }
@@ -123,12 +125,14 @@ public class NewsCrawler
                         String title=newsObj.getString("title");
                         String newsType=newsObj.getString("type");
                         String id=newsObj.getString("_id");
-                        String source=newsObj.getString("source");
                         String date=newsObj.getString("time");
-                        if(source.isEmpty())
-                        {
-                            JSONObject authorObj=newsObj.getJSONArray("authors").getJSONObject(0);
-                            source=authorObj.getString("name");
+                        String source=new String();
+                        if(!newsType.equals("event")) {
+                            source = newsObj.getString("source");
+                            if (source.isEmpty()&&newsType.equals("paper")) {
+                                JSONObject authorObj = newsObj.getJSONArray("authors").getJSONObject(0);
+                                source = authorObj.getString("name");
+                            }
                         }
                         lst.add(new NewsData(title,date,source,id,newsType));
                     }
