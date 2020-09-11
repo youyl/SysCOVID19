@@ -29,6 +29,7 @@ public class ScholarDetailActivity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scholar_detail);
+        getSupportActionBar().hide();
         int id =getIntent().getIntExtra("id", 0);
         final int mode = getIntent().getIntExtra("mode", 0);
         if (mode == 0)
