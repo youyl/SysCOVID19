@@ -27,6 +27,7 @@ public class NewsDetail extends AppCompatActivity
     private String title;
     private String content;
     private String source;
+    private String urlll;
     private String date;
 
     @Override
@@ -39,6 +40,7 @@ public class NewsDetail extends AppCompatActivity
         content=new StringBuilder().append("    ").append(getIntent().getStringExtra("CONTENT")).toString();
         source=getIntent().getStringExtra("SOURCE");
         date=getIntent().getStringExtra("DATE");
+        urlll=getIntent().getStringExtra("URL");
 
         ImageButton share=findViewById(R.id.share_btn);
         share.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +57,7 @@ public class NewsDetail extends AppCompatActivity
                     public void onShare(Platform platform, cn.sharesdk.framework.Platform.ShareParams paramsToShare) {
                         //微博分享链接和图文
                         if ("SinaWeibo".equals(platform.getName())) {
-                            paramsToShare.setText("[ SysCOVID19: " + title + " ]\n" + "http://xlore.org/instance/eni27782" + "(分享自@SysCOVID19)");
+                            paramsToShare.setText("[ SysCOVID19: " + title + " ]\n" + urlll + "(分享自@SysCOVID19)");
                             Bitmap imageData = BitmapFactory.decodeResource(getResources(), R.drawable.create);
                             paramsToShare.setImageData(imageData);
                         }

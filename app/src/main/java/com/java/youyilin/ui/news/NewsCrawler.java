@@ -11,15 +11,17 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 
 public class NewsCrawler
 {
+    private static HashMap<String,String> contentMap;
     private static NewsCrawler instance=new NewsCrawler();
     private NewsCrawler()
     {
         //init database
+        contentMap=new HashMap<String, String>();
     }
     public static NewsCrawler getInstance()
     {
@@ -44,7 +46,7 @@ public class NewsCrawler
                 try {
                     String adr = new StringBuilder().append("https://covid-dashboard.aminer.cn/api/events/list?")
                             .append("type=").append(type).append("&page=")
-                            .append(new Integer(startPage).toString()).append("&size=500").toString();
+                            .append(new Integer(startPage).toString()).append("&size=300").toString();
                     URL url = new URL(adr);
                     HttpURLConnection path=(HttpURLConnection) url.openConnection();
                     path.setRequestMethod("GET");
@@ -76,6 +78,8 @@ public class NewsCrawler
                         String id=newsObj.getString("_id");
                         String date=newsObj.getString("time");
                         String source=new String();
+                        String content=newsObj.getString("content");
+                        String urlll=newsObj.getJSONArray("urls").getString(0);
                         if(!newsType.equals("event")) {
                             source = newsObj.getString("source");
                             if (source.isEmpty()&&newsType.equals("paper")) {
@@ -84,7 +88,8 @@ public class NewsCrawler
                             }
                         }
                         if(title.contains(keyword)) {
-                            lst.add(new NewsData(title, date, source, id, newsType));
+                            if(!contentMap.containsKey(id))contentMap.put(id,content);
+                            lst.add(new NewsData(title, date, source, id, newsType,urlll));
                         }
                     }
 
@@ -129,6 +134,8 @@ public class NewsCrawler
                         String id=newsObj.getString("_id");
                         String date=newsObj.getString("time");
                         String source=new String();
+                        String content=newsObj.getString("content");
+                        String urlll=newsObj.getJSONArray("urls").getString(0);
                         if(!newsType.equals("event")) {
                             source = newsObj.getString("source");
                             if (source.isEmpty()&&newsType.equals("paper")) {
@@ -136,7 +143,8 @@ public class NewsCrawler
                                 source = authorObj.getString("name");
                             }
                         }
-                        lst.add(new NewsData(title,date,source,id,newsType));
+                        if(!contentMap.containsKey(id))contentMap.put(id,content);
+                        lst.add(new NewsData(title,date,source,id,newsType,urlll));
                     }
 
                 }catch (Exception e){
@@ -149,38 +157,8 @@ public class NewsCrawler
     public String getNewsDetail(String id)
     {
         String str;
-        try {
-            String adr = new StringBuilder().append("https://covid-dashboard-api.aminer.cn/event/")
-                    .append(id).toString();
-            Log.d("Detail Adr Created",adr);
-            URL url = new URL(adr);
-            HttpURLConnection path=(HttpURLConnection) url.openConnection();
-            path.setRequestMethod("GET");
-            path.setConnectTimeout(2000);
-            path.setReadTimeout(2000);
-            path.connect();
-
-            InputStream inputStream = path.getInputStream();
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            StringBuilder jsonStr = new StringBuilder();
-            String inputLine;
-            while ((inputLine = bufferedReader.readLine()) != null)
-            {
-                jsonStr.append(inputLine);
-            }
-            bufferedReader.close();
-            inputStreamReader.close();
-            inputStream.close();
-            inputLine=jsonStr.toString();
-
-            JSONObject largeObj=new JSONObject(inputLine);
-            JSONObject smallObj=largeObj.getJSONObject("data");
-            String urlsss=smallObj.getJSONArray("urls").getString(0);
-            Log.d("News Url catch Created",urlsss);
-            str=smallObj.getString("content");
-        }catch (Exception e){
-            Log.d("DetailCrawler Create Error","Something Happend"); return null;}
+        if(contentMap.containsKey(id))str=contentMap.get(id);
+        else str="";
         return str;
     }
 

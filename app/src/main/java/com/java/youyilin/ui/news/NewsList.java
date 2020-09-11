@@ -103,6 +103,7 @@ public class NewsList extends Fragment {
                     intent.putExtra("TITLE",_input.getTitle());
                     intent.putExtra("SOURCE",_input.getSource());
                     intent.putExtra("DATE",_input.getDate());
+                    intent.putExtra("URL",_input.getUrl());
                     intent.putExtra("CONTENT",content);
                     startActivity(intent);
                 }
