@@ -110,7 +110,7 @@ public class ScholarSubBackend {
                         }
                     }
                 } catch(Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     Log.d("test", "ScholarSubBackend dealScholar failed. ");
                 }
                 Collections.sort(scholarLiveList, new Comparator<Scholar>() {
@@ -118,7 +118,8 @@ public class ScholarSubBackend {
                         return new Integer(o2.numViewed).compareTo(o1.numViewed);
                     }
                 });
-                scholarLiveList = scholarLiveList.subList(0, 50);
+                if (scholarLiveList.size() > 50)
+                    scholarLiveList = scholarLiveList.subList(0, 50);
                 return scholarLiveList.size() != 0 || scholarDeadList.size() != 0;
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());

@@ -58,7 +58,7 @@ public class DataSubBackend {
                         dataItemList = getDataItemList(jsonData);
                     }
                 } catch(Exception e) {
-                    e.printStackTrace();
+                    //e.printStackTrace();
                     Log.d("test", "DataSubBackend refreshData failed. ");
                     dataItemList = null;
                 }
