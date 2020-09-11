@@ -5,6 +5,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -108,19 +110,24 @@ public class ScholarDetail extends AppCompatActivity {
         }
         for (int i = 0; i < num; i ++)
             tagsView[i].setText(scholar.tags.get(i));
-        RelativeLayout layoutTags = (RelativeLayout) findViewById(R.id.layout_tags);
+        float width = ((RelativeLayout) findViewById(R.id.layout_tags)).getWidth();
+        TextView up = null;
         TextView start = tagsView[0];
         TextView last = tagsView[0];
-        float w = tagsView[0].getPaint().measureText(scholar.tags.get(0)) + 10;
-        int width = layoutTags.getWidth();
+        float w = tagsView[0].getPaint().measureText(scholar.tags.get(0)) + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+        Log.v("test", "0 " + w + " " + scholar.tags.get(0));
         for (int i = 1; i < num; i ++) {
-            float tw = tagsView[i].getPaint().measureText(scholar.tags.get(i)) + 10;
+            float tw = tagsView[i].getPaint().measureText(scholar.tags.get(i)) + TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+            Log.v("test", "" + i + " " + tw +" " + scholar.tags.get(i));
             if (w + tw <= width){
                 ((RelativeLayout.LayoutParams) tagsView[i].getLayoutParams()).addRule(RelativeLayout.RIGHT_OF, last.getId());
+                if (up != null)
+                    ((RelativeLayout.LayoutParams) tagsView[i].getLayoutParams()).addRule(RelativeLayout.BELOW, up.getId());
                 last = tagsView[i];
                 w = w + tw;
             }else{
                 ((RelativeLayout.LayoutParams) tagsView[i].getLayoutParams()).addRule(RelativeLayout.BELOW, start.getId());
+                up = start;
                 start = last = tagsView[i];
                 w = tw;
             }
