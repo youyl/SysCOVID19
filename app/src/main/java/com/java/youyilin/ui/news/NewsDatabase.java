@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
@@ -27,9 +28,11 @@ public class NewsDatabase
     private ArrayList<String>cachedDataDetail;
     private HashSet<String>cachedNews;
     NewsList offlineView;
+    HashMap<String,String> contentMap;
 
     private NewsDatabase()
     {
+        contentMap=new HashMap<String, String>();
         offlineView=null;
         searchHistory=new ArrayList<String>();
         cachedNews=new HashSet<String>();
@@ -77,6 +80,7 @@ public class NewsDatabase
                         String newscontent=newsObj.getString("content");
                         String urlll=newsObj.getString("url");
                         cachedNews.add(id);
+                        contentMap.put(id,newscontent);
                         cachedData.add(new NewsData(title,date,source,id,newsType,urlll));
                         cachedDataDetail.add(newscontent);
                     }
@@ -166,6 +170,14 @@ public class NewsDatabase
 
     public void addHistory(final String str)
     {
+        for (int i=0;i<searchHistory.size();i++)
+        {
+            if(searchHistory.get(i).equals(str))
+            {
+                searchHistory.remove(i);
+                break;
+            }
+        }
         if(searchHistory.size()==10)searchHistory.remove(9);
         searchHistory.add(0,str);
     }
@@ -181,6 +193,7 @@ public class NewsDatabase
         if(iscached(_name))return;
         cachedNews.add(_name);
         cachedDataDetail.add(0,_content);
+        contentMap.put(_name,_content);
         cachedData.add(0,_data);
     }
     public void refreshOfflineView() {
@@ -189,14 +202,8 @@ public class NewsDatabase
 
     public String findContent(String _id)
     {
-        for (int i=0;i<cachedData.size();i++)
-        {
-            if(cachedData.get(i).getId().equals(_id))
-            {
-                return cachedDataDetail.get(i);
-            }
-        }
-        return "";
+        if(contentMap.containsKey(_id))return contentMap.get(_id);
+        else return "";
     }
 
     public ArrayList<String> getHistory()

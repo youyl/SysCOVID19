@@ -116,11 +116,11 @@ class ClusterData
 
 public class ClusterFragment extends Fragment {
 
-    private CListAdatper mylistadp;
+//    private CListAdatper mylistadp;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        mylistadp=new CListAdatper(getContext());
+//        mylistadp=new CListAdatper(getContext());
         ClusterData.getInstance().createData(getContext());
         super.onCreate(savedInstanceState);
     }
@@ -129,9 +129,17 @@ public class ClusterFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_cluster, container, false);
-        ListView listlistview=root.findViewById(R.id.cluster_list);
-        listlistview.setAdapter(mylistadp);
-        mylistadp.setNamelist(ClusterData.getInstance().getNamelist());
+        RandomLayout view=(RandomLayout)root.findViewById(R.id.random_cluster);
+        view.setData(ClusterData.getInstance().getNamelist());
+        view.setOnItemClickListener(new RandomLayout.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position, String text) {
+                launchFragment(text);
+            }
+        });
+//        ListView listlistview=root.findViewById(R.id.cluster_list);
+//        listlistview.setAdapter(mylistadp);
+//        mylistadp.setNamelist(ClusterData.getInstance().getNamelist());
         return root;
     }
 
@@ -141,7 +149,7 @@ public class ClusterFragment extends Fragment {
         intent.putExtra("NAME",_name);
         startActivity(intent);
     }
-
+/*
     public class CListAdatper extends BaseAdapter
     {
         private ArrayList<String> namelist;
@@ -187,5 +195,5 @@ public class ClusterFragment extends Fragment {
             });
             return view;
         }
-    }
+    }*/
 }
