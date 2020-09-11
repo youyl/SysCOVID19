@@ -31,8 +31,8 @@
             android:resource="@drawable/property_corner" />
         <activity android:name="com.java.youyilin.ui.news.MenuActivity" />
         <activity android:name="com.java.youyilin.ui.news.SearchActivity" />
-        <activity android:name="com.java.youyilin.ui.news.NewsDetail" />
-        <activity android:name="com.java.youyilin.ui.scholar.ScholarDetail" />
+        <activity android:name="com.java.youyilin.ui.news.NewsDetailActivity" />
+        <activity android:name="com.java.youyilin.ui.scholar.ScholarDetailActivity" />
         <activity
             android:name="com.java.youyilin.MainActivity"
             android:label="@string/title_activity_main"

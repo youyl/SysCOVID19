@@ -230,16 +230,18 @@ public class DataSubFragment extends Fragment {
             //+2：最大值n就有n+1个刻度，再加上y轴多一个单位长度
             yAxis.setLabelCount(6, false);
             //设置从Y轴值
-            yAxis.setAxisMinimum(0f);
-            int maxx = 0;
+            int maxx = 0, minn = -1;
             if (list != null){
                 for (Entry e : list) {
                     if (e.getY() > maxx)
                         maxx = (int) e.getY();
+                    if (minn == -1 || e.getY() < minn)
+                        minn = (int) e.getY();
                 }
             }
             //+1:y轴多一个单位长度，为了好看
             yAxis.setAxisMaximum(maxx + 1);
+            yAxis.setAxisMinimum(minn);
             //y轴
             yAxis.setValueFormatter(new IAxisValueFormatter() {
                 @Override

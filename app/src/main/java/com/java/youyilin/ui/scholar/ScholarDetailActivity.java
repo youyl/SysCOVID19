@@ -21,7 +21,7 @@ import io.reactivex.functions.Consumer;
 
 import static android.text.Html.FROM_HTML_MODE_LEGACY;
 
-public class ScholarDetail extends AppCompatActivity {
+public class ScholarDetailActivity extends AppCompatActivity {
     private Scholar scholar;
 
     @Override

@@ -1,10 +1,8 @@
 package com.java.youyilin.ui.news;
-import android.media.Image;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +19,7 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.sharesdk.onekeyshare.ShareContentCustomizeCallback;
 
-public class NewsDetail extends AppCompatActivity
+public class NewsDetailActivity extends AppCompatActivity
 {
 
     private String title;
@@ -35,12 +33,19 @@ public class NewsDetail extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_detail);
+        getSupportActionBar().hide();
         setTitle("阅读正文");
         title=getIntent().getStringExtra("TITLE");
         content=new StringBuilder().append("    ").append(getIntent().getStringExtra("CONTENT")).toString();
         source=getIntent().getStringExtra("SOURCE");
         date=getIntent().getStringExtra("DATE");
         urlll=getIntent().getStringExtra("URL");
+
+        final String tempContent;
+        if (content.length() > 50)
+            tempContent = content.substring(0, 50) + "...";
+        else
+            tempContent = content;
 
         ImageButton share=findViewById(R.id.share_btn);
         share.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +62,7 @@ public class NewsDetail extends AppCompatActivity
                     public void onShare(Platform platform, cn.sharesdk.framework.Platform.ShareParams paramsToShare) {
                         //微博分享链接和图文
                         if ("SinaWeibo".equals(platform.getName())) {
-                            paramsToShare.setText("[ SysCOVID19: " + title + " ]\n" + urlll + "(分享自@SysCOVID19)");
+                            paramsToShare.setText("【SysCOVID19：" + title + "】\n" + tempContent + "\n" + urlll + "（分享自@SysCOVID19）");
                             Bitmap imageData = BitmapFactory.decodeResource(getResources(), R.drawable.create);
                             paramsToShare.setImageData(imageData);
                         }
@@ -96,19 +101,19 @@ public class NewsDetail extends AppCompatActivity
                 oks.setCallback(new PlatformActionListener() {
                     @Override
                     public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                        Toast.makeText(NewsDetail.this, "分享成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewsDetailActivity.this, "分享成功", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Platform platform, int i, Throwable throwable) {
-                        Toast.makeText(NewsDetail.this, "分享失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewsDetailActivity.this, "分享失败", Toast.LENGTH_SHORT).show();
                         throwable.getMessage();
                         throwable.printStackTrace();
                     }
 
                     @Override
                     public void onCancel(Platform platform, int i) {
-                        Toast.makeText(NewsDetail.this, "分享已取消", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewsDetailActivity.this, "分享已取消", Toast.LENGTH_SHORT).show();
                     }
                 });
                 // 启动分享GUI

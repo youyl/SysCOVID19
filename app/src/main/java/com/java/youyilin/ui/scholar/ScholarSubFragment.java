@@ -69,7 +69,7 @@ public class ScholarSubFragment extends Fragment {
             h.scholarButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), ScholarDetail.class);
+                    Intent intent = new Intent(getActivity(), ScholarDetailActivity.class);
                     intent.putExtra("id", position);
                     intent.putExtra("mode", mode);
                     startActivity(intent);
