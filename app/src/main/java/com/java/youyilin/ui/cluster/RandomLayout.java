@@ -32,7 +32,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.ColorInt;
-import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
@@ -50,8 +49,8 @@ public class RandomLayout extends ViewGroup {
 
     private List<? extends LayoutData> mData;
     private final Context mContext;
-    private static final int TV_PADDING_DEFAULT = 10;
-    private static final int TV_MARGIN_DEFAULT = 10;
+    private static final int TV_PADDING_DEFAULT = 8;
+    private static final int TV_MARGIN_DEFAULT = 8;
     private int mTvPadding = TV_PADDING_DEFAULT;
     private int mTvMarginX = TV_MARGIN_DEFAULT;
     private int mTvMarginY = TV_MARGIN_DEFAULT;
@@ -182,7 +181,7 @@ public class RandomLayout extends ViewGroup {
         mLayoutChildViews.clear();
         for (int i = mViewAreaIndices.size() - 1; i >= 0; i--) {
             View childAt = getChildAt(mViewAreaIndices.get(i).mIndex);
-            int tryCount = 10;
+            int tryCount = 20;
             while (true) {
                 if (tryLayout(childAt)) {
                     mLayoutChildViews.add(childAt);
@@ -362,7 +361,7 @@ public class RandomLayout extends ViewGroup {
         int getTextSize();
     }
 
-    private int defaultSize = 9;
+    private int defaultSize = 6;
 
     private class DefaultLayoutData implements LayoutData {
         String mText;
