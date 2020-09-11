@@ -4,7 +4,7 @@
     <!-- 边框 -->
     <stroke
         android:width="4dp"
-        android:color="@color/grayAccent" />
+        android:color="@color/grayLight" />
     <!-- 填充 -->
     <solid android:color="@android:color/white" />
     <!-- 圆角 -->

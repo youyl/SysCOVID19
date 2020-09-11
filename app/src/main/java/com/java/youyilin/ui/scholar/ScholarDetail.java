@@ -7,6 +7,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -67,7 +68,7 @@ public class ScholarDetail extends AppCompatActivity {
         affiliationView.setText(scholar.affiliation);
 
         if (scholar.homepage != null && scholar.homepage.length() > 0) {
-            TextView homepageView = findViewById(R.id.scholar_detail_homepage);
+            TextView homepageView = findViewById(R.id.scholar_homepage);
             homepageView.setText(scholar.homepage);
         }else
             findViewById(R.id.layout_detail_homepage).setVisibility(View.GONE);
@@ -75,17 +76,6 @@ public class ScholarDetail extends AppCompatActivity {
         TextView profileView = findViewById(R.id.scholar_detail_profile);
         profileView.setText(String.format("该专家的H指数为%d，发表论文共有%d篇，论文总共被引用了%d次，活跃度为%.2f，多样性为%.2f。",
                 scholar.hindex, scholar.pubs, scholar.citations, scholar.activity, scholar.diversity));
-
-        if (scholar.tags.size() == 0)
-            findViewById(R.id.layout_research).setVisibility(View.GONE);
-        else{
-            TextView researchView = findViewById(R.id.scholar_detail_research);
-            StringBuilder builder = new StringBuilder(scholar.tags.get(0));
-            for (int i = 1; i < scholar.tags.size(); i ++)
-                builder.append("、" + scholar.tags.get(i));
-            String temp = builder.toString();
-            researchView.setText("尤其在" + temp + "领域建树尤为突出。");
-        }
 
         if (scholar.edu == null || scholar.edu.length() == 0)
             findViewById(R.id.layout_edu).setVisibility(View.GONE);
@@ -99,6 +89,41 @@ public class ScholarDetail extends AppCompatActivity {
         else {
             TextView bioView = findViewById(R.id.scholar_detail_bio);
             bioView.setText(parseHtml(scholar.bio));
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus){
+        super.onWindowFocusChanged(hasFocus);
+        if (!hasFocus)
+            return;
+
+        TextView tagsView[] = {findViewById(R.id.tag_1), findViewById(R.id.tag_2), findViewById(R.id.tag_3),
+                findViewById(R.id.tag_4), findViewById(R.id.tag_5), findViewById(R.id.tag_6)};
+        int num = 6;
+        if (scholar.tags.size() < 6){
+            num = scholar.tags.size();
+            for (int i = num; i < 6; i ++)
+                tagsView[i].setVisibility(View.GONE);
+        }
+        for (int i = 0; i < num; i ++)
+            tagsView[i].setText(scholar.tags.get(i));
+        RelativeLayout layoutTags = (RelativeLayout) findViewById(R.id.layout_tags);
+        TextView start = tagsView[0];
+        TextView last = tagsView[0];
+        float w = tagsView[0].getPaint().measureText(scholar.tags.get(0)) + 10;
+        int width = layoutTags.getWidth();
+        for (int i = 1; i < num; i ++) {
+            float tw = tagsView[i].getPaint().measureText(scholar.tags.get(i)) + 10;
+            if (w + tw <= width){
+                ((RelativeLayout.LayoutParams) tagsView[i].getLayoutParams()).addRule(RelativeLayout.RIGHT_OF, last.getId());
+                last = tagsView[i];
+                w = w + tw;
+            }else{
+                ((RelativeLayout.LayoutParams) tagsView[i].getLayoutParams()).addRule(RelativeLayout.BELOW, start.getId());
+                start = last = tagsView[i];
+                w = tw;
+            }
         }
     }
 

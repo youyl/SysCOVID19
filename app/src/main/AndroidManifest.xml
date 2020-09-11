@@ -34,7 +34,7 @@
 
         <activity
             android:name="com.java.youyilin.MainActivity"
-            android:label="@string/title_activity_main" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.java.youyilin.CreateActivity"
             android:screenOrientation="portrait">
