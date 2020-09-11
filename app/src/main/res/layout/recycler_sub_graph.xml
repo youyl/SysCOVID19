@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="@color/grayAccent"
+    app:cardBackgroundColor="@color/grayLight"
     android:layout_marginVertical="6dp"
     app:cardCornerRadius="8dp">
 
@@ -78,7 +78,6 @@
                 android:layout_height="match_parent"
                 android:scaleType="fitCenter"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
                 android:layout_margin="8dp">
             </ImageView>
 

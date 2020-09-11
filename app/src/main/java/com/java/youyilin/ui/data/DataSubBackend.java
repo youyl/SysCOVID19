@@ -49,9 +49,9 @@ public class DataSubBackend {
                     String body = getUrlBody(url);
                     if(body.equals("")) {
                         if (mode == 0)
-                            Log.d("warning","Domestic dataSubBackend fetchData failed. ");
+                            Log.d("warning","Domestic dataSubBackend getUrlBody failed. ");
                         else
-                            Log.d("warning","World dataSubBackend fetchData failed. ");
+                            Log.d("warning","World dataSubBackend getUrlBody failed. ");
                         dataItemList =  new ArrayList<>();
                     }else{
                         JSONObject jsonData = new JSONObject(body);
@@ -59,6 +59,7 @@ public class DataSubBackend {
                     }
                 } catch(Exception e) {
                     e.printStackTrace();
+                    Log.d("test", "DataSubBackend refreshData failed. ");
                     dataItemList = null;
                 }
                 return !(dataItemList == null || dataItemList.size() == 0);

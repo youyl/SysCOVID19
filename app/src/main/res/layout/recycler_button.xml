@@ -8,7 +8,7 @@
         android:id="@+id/recycler_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/grayAccent"
+        android:background="@color/grayLight"
         android:layout_gravity="center_horizontal"
         android:minHeight="0dp"
         android:paddingHorizontal="8dp"

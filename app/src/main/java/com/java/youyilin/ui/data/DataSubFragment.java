@@ -147,7 +147,7 @@ public class DataSubFragment extends Fragment {
                     if (cellInfo.row % 2 == 0) {
                         return resources.getColor(R.color.grayPrimary);
                     }
-                    return resources.getColor(R.color.grayAccent);
+                    return resources.getColor(R.color.grayLight);
                 }
             });
             Column<String> nameColumn = new Column<>("地区", "name");

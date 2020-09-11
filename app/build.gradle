@@ -1,12 +1,19 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.mob.sdk'
 
 android {
     signingConfigs {
         defaultkey {
-            storeFile file('C:\\YouylNoSpacePath\\Keystore\\SysCOVID19KeyStore.jks')
-            storePassword '2018011324'
-            keyAlias 'syscovid19-keystore'
-            keyPassword '2018011324'
+            storeFile file('F:\\Projects\\android.jks')
+            storePassword 'sunzm001'
+            keyAlias 'key0'
+            keyPassword 'sunzm001'
+        }
+        debug {
+            storeFile file('F:\\Projects\\android.jks')
+            storePassword 'sunzm001'
+            keyAlias 'key0'
+            keyPassword 'sunzm001'
         }
     }
     compileSdkVersion 28
@@ -52,4 +59,50 @@ dependencies {
     implementation 'io.reactivex.rxjava2:rxjava:2.1.2'
     implementation 'com.github.huangyanbin:SmartTable:2.2.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+}
+
+MobSDK {
+    appKey "30c16e201098e"
+    appSecret "4286f278eeb8fd50dcb2bc69e2cabd8a"
+    ShareSDK {
+        loopShare false
+        devInfo {
+            SinaWeibo {
+                id 1
+                sortId 1
+                appKey "3718778063"
+                appSecret "d01acafaa67e156d71dce01a86afbd92"
+                callbackUri "https://api.weibo.com/oauth2/default.html"
+                shareByAppClient true
+                enable true
+            }
+            /*
+            Wechat {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+                userName "gh_afb25ac019c9"
+                path "pages/index/index.html?id=1"
+                withShareTicket true
+                miniprogramType 2
+            }
+            QQ {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+            WechatMoments {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+            }
+            WechatFavorite {
+                appId "wx4868b35061f87885"
+                appSecret "64020361b8ec4c99936c0e3999a9f249"
+            }
+            QZone {
+                appId "100371282"
+                appKey "aed9b0303e3ed1e27bae87c33761161d"
+            }
+
+             */
+        }
+    }
 }
