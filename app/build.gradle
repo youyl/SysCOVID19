@@ -2,6 +2,20 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.mob.sdk'
 
 android {
+    signingConfigs {
+        defaultkey {
+            storeFile file('F:\\Projects\\android.jks')
+            storePassword 'sunzm001'
+            keyAlias 'key0'
+            keyPassword 'sunzm001'
+        }
+        debug {
+            storeFile file('F:\\Projects\\android.jks')
+            storePassword 'sunzm001'
+            keyAlias 'key0'
+            keyPassword 'sunzm001'
+        }
+    }
     compileSdkVersion 28
     buildToolsVersion "30.0.2"
 
@@ -13,6 +27,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.defaultkey
     }
 
     buildTypes {
@@ -86,7 +101,6 @@ MobSDK {
                 appId "100371282"
                 appKey "aed9b0303e3ed1e27bae87c33761161d"
             }
-
              */
         }
     }
