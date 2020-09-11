@@ -1,7 +1,5 @@
 package com.java.youyilin.ui.news;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,19 +9,16 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.java.youyilin.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-
-import io.reactivex.Single;
 
 public class MenuActivity extends AppCompatActivity {
     private int startCat;
@@ -36,6 +31,7 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         Log.d("Menu Create","News Menu Created");
         setTitle("设置分类列表");
         setContentView(R.layout.activity_menu);
