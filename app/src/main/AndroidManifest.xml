@@ -21,7 +21,6 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:networkSecurityConfig="@xml/network_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -34,10 +33,6 @@
         <activity android:name="com.java.youyilin.ui.news.SearchActivity" />
         <activity android:name="com.java.youyilin.ui.news.NewsDetail" />
         <activity android:name="com.java.youyilin.ui.scholar.ScholarDetail" />
-
-        <activity android:name=".ui.news.MenuActivity" />
-        <activity android:name=".ui.news.SearchActivity" />
-        <activity android:name=".ui.news.NewsDetail" />
         <activity
             android:name="com.java.youyilin.MainActivity"
             android:label="@string/title_activity_main"
