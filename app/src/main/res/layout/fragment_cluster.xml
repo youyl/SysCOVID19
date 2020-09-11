@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/cluster_list"
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
-        android:dividerHeight="10dp"
-        android:divider="#00000000"/>
-
-</LinearLayout>
+        android:src="@drawable/cluster_bkg"
+        android:alpha="0.8"
+        android:background="#ffffff"
+        android:foregroundGravity="center"
+        />
+    <com.java.youyilin.ui.cluster.RandomLayout
+        android:id="@+id/random_cluster"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#00000000"
+        android:backgroundTint="#00000000"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
