@@ -259,4 +259,8 @@ public class NewsList extends Fragment {
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
+
+    public void setVisibility(int i){
+        mySwipeRefresh.setVisibility(i);
+    }
 }

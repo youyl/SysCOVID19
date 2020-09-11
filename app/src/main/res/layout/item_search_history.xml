@@ -3,20 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginBottom="2dp"
     android:clickable="true"
-    app:cardBackgroundColor="#dddddd"
+    app:cardBackgroundColor="@color/white"
     >
-    <TextView
-        android:id="@+id/search_item_text"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:textSize="18sp"
-        android:gravity="center_vertical|start"
-        />
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:id="@+id/history_image_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search_relation"
+            android:scaleType="fitStart"
+            android:layout_alignParentStart="true">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/search_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:singleLine="true"
+            android:gravity="center_vertical|start"
+            android:layout_toEndOf="@+id/history_image_search"
+            android:layout_toStartOf="@+id/history_image_arrow"
+            android:layout_marginHorizontal="8dp"/>
+
+        <ImageView
+            android:id="@+id/history_image_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_arrow_forward_ios_16"
+            android:scaleType="fitEnd"
+            android:layout_alignParentEnd="true">
+        </ImageView>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

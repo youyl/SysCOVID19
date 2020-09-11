@@ -51,11 +51,13 @@ public class SearchActivity extends AppCompatActivity {
                     Log.d("Focus Change Created","TRUE");
                     myAdaptor.updatelist();
                     mylv.setVisibility(View.VISIBLE);
+                    nl.setVisibility(View.INVISIBLE);
                 }
                 else
                 {
                     Log.d("Focus Change Created","FALSE");
                     mylv.setVisibility(View.GONE);
+                    nl.setVisibility(View.VISIBLE);
                 }
             }
         });
