@@ -51,7 +51,7 @@ public class NewsFragment extends Fragment {
                                           public void onClick(View view) {
                                               Intent intent=new Intent(getActivity(), SearchActivity.class);
                                               startActivityForResult(intent,0);
-                                              getActivity().overridePendingTransition(R.anim.bottom_up_news,R.anim.bottom_stable_news);
+                                              //getActivity().overridePendingTransition(R.anim.bottom_up_news,R.anim.bottom_stable_news);
                                           }
                                       }
         );

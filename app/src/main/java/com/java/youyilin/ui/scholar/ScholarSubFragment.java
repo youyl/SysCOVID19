@@ -88,14 +88,21 @@ public class ScholarSubFragment extends Fragment {
             h.affiliation.setText(scholar.affiliation);
             Bitmap bitmap = getImageFromAssetsFile(scholar.id + ".jpg", getContext());
             if (bitmap != null) {
-                h.scholarImage.setImageBitmap(bitmap);
+                if (mode == 1)
+                    h.scholarImage.setImageBitmap(ScholarSubBackend.getGrayBitmap(bitmap));
+                else
+                    h.scholarImage.setImageBitmap(bitmap);
                 return;
             }
             GraphBackend.getBitmapFromURL(scholar.avatar).subscribe(new Consumer<Bitmap>() {
                 @Override
                 public void accept(Bitmap bitmap) throws Exception {
-                    if (bitmap != null)
-                        h.scholarImage.setImageBitmap(bitmap);
+                    if (bitmap != null) {
+                        if (mode == 1)
+                            h.scholarImage.setImageBitmap(ScholarSubBackend.getGrayBitmap(bitmap));
+                        else
+                            h.scholarImage.setImageBitmap(bitmap);
+                    }
                     else
                         h.scholarImage.setVisibility(View.INVISIBLE);
                 }

@@ -30,7 +30,7 @@ public class ScholarDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scholar_detail);
         int id =getIntent().getIntExtra("id", 0);
-        int mode = getIntent().getIntExtra("mode", 0);
+        final int mode = getIntent().getIntExtra("mode", 0);
         if (mode == 0)
             scholar = ScholarSubBackend.getInstance().scholarLiveList.get(id);
         else
@@ -45,14 +45,22 @@ public class ScholarDetailActivity extends AppCompatActivity {
 
         final ImageView imageView = findViewById(R.id.scholar_detail_image);
         Bitmap bitmap = ScholarSubFragment.getImageFromAssetsFile(scholar.id + ".jpg", this);
-        if (bitmap != null)
-            imageView.setImageBitmap(bitmap);
+        if (bitmap != null) {
+            if (mode == 1)
+                imageView.setImageBitmap(ScholarSubBackend.getGrayBitmap(bitmap));
+            else
+                imageView.setImageBitmap(bitmap);
+        }
         else{
             GraphBackend.getBitmapFromURL(scholar.avatar).subscribe(new Consumer<Bitmap>() {
                 @Override
                 public void accept(Bitmap bitmap) throws Exception {
-                    if (bitmap != null)
-                        imageView.setImageBitmap(bitmap);
+                    if (bitmap != null) {
+                        if (mode == 1)
+                            imageView.setImageBitmap(ScholarSubBackend.getGrayBitmap(bitmap));
+                        else
+                            imageView.setImageBitmap(bitmap);
+                    }
                     else
                         imageView.setVisibility(View.INVISIBLE);
                 }

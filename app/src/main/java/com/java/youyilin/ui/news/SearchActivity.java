@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
     public void finish()
     {
         super.finish();
-        overridePendingTransition(R.anim.bottom_stable_news,R.anim.bottom_down_news);
+        //overridePendingTransition(R.anim.bottom_stable_news,R.anim.bottom_down_news);
     }
 
     public class HistoryAdapter extends BaseAdapter
