@@ -108,6 +108,10 @@ public class ScholarDetailActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
         if (!hasFocus)
             return;
+        if (scholar.tags == null || scholar.tags.size() == 0){
+            findViewById(R.id.layout_tags).setVisibility(View.GONE);
+            return;
+        }
 
         TextView tagsView[] = {findViewById(R.id.tag_1), findViewById(R.id.tag_2), findViewById(R.id.tag_3),
                 findViewById(R.id.tag_4), findViewById(R.id.tag_5), findViewById(R.id.tag_6)};
