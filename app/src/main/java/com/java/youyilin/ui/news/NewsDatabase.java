@@ -26,9 +26,11 @@ public class NewsDatabase
     private ArrayList<NewsData>cachedData;
     private ArrayList<String>cachedDataDetail;
     private HashSet<String>cachedNews;
+    NewsList offlineView;
 
     private NewsDatabase()
     {
+        offlineView=null;
         searchHistory=new ArrayList<String>();
         cachedNews=new HashSet<String>();
         cachedData=new ArrayList<NewsData>();
@@ -38,6 +40,10 @@ public class NewsDatabase
     public static NewsDatabase getInstance()
     {
         return instance;
+    }
+
+    public void setOfflineView(NewsList offlineView) {
+        this.offlineView = offlineView;
     }
 
     public Single<Boolean> loadData(final Context _context)
@@ -174,6 +180,9 @@ public class NewsDatabase
         cachedNews.add(_name);
         cachedDataDetail.add(0,_content);
         cachedData.add(0,_data);
+    }
+    public void refreshOfflineView() {
+        if (offlineView != null) offlineView.refresh();
     }
 
     public String findContent(String _id)

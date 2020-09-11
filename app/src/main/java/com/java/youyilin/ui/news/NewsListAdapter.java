@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void setIsRefreshing(boolean val)
     {
         isRefreshing=val;
+        if(val)Log.d("TAG Created","To be Visibie prograssbar");
+        if(!val)Log.d("TAG Created","Not To be Visibie prograssbar");
         this.notifyDataSetChanged();
     }
 
@@ -106,6 +109,28 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 trueholder.type.setTextColor(0xff000000);
             }
         }
+        else
+        {
+            PlaceTakerViewHolder thisviewholder=(PlaceTakerViewHolder)holder;
+            View view=thisviewholder.itemview;
+            TextView text=view.findViewById(R.id.news_placetaker_search);
+            ProgressBar bar=view.findViewById(R.id.news_placetaker_progressbar);
+            Log.d("TAG Created",String.valueOf(fat.isSearch()));
+            if(fat.isSearch())
+            {
+                text.setVisibility(View.VISIBLE);
+                Log.d("TAG Created",String.valueOf(isRefreshing));
+                if(!isRefreshing) {
+                    bar.setVisibility(View.GONE);
+                    text.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    text.setVisibility(View.GONE);
+                    bar.setVisibility(View.VISIBLE);
+                }
+            }
+        }
     }
 
     @Override
@@ -150,8 +175,10 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public class PlaceTakerViewHolder extends RecyclerView.ViewHolder
     {
+        public View itemview;
         public PlaceTakerViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemview=itemView;
         }
     }
 

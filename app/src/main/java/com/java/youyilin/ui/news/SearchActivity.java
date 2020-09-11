@@ -42,15 +42,6 @@ public class SearchActivity extends AppCompatActivity {
         myAdaptor=new HistoryAdapter(this,this);
         mylv.setAdapter(myAdaptor);
 
-        Button btn=findViewById(R.id.search_exit_btn);
-        btn.setOnClickListener(new View.OnClickListener()
-                               {
-                                   @Override
-                                   public void onClick(View view) {
-                                       finish();
-                                   }
-                               }
-        );
         searchView.setSubmitButtonEnabled(true);
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

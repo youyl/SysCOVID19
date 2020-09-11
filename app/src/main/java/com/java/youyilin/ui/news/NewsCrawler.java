@@ -39,10 +39,12 @@ public class NewsCrawler
         {
             if(type.equals(new String("search")))
             {
+                if(keyword==null)return lst;
+                if(keyword.isEmpty())return lst;
                 try {
                     String adr = new StringBuilder().append("https://covid-dashboard.aminer.cn/api/events/list?")
                             .append("type=").append(type).append("&page=")
-                            .append(new Integer(startPage).toString()).append("&size=200").toString();
+                            .append(new Integer(startPage).toString()).append("&size=500").toString();
                     URL url = new URL(adr);
                     HttpURLConnection path=(HttpURLConnection) url.openConnection();
                     path.setRequestMethod("GET");

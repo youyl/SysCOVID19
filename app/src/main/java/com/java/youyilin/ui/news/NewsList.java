@@ -29,6 +29,7 @@ import io.reactivex.schedulers.Schedulers;
 public class NewsList extends Fragment {
 
     private static final String offline_tag=new String("offline");
+    private static final String search_tag=new String("search");
     private String myTitle;
     private String myCode;
     private TextView failtorefresh;
@@ -84,6 +85,10 @@ public class NewsList extends Fragment {
     {
         return myTitle.equals(offline_tag);
     }
+    public boolean isSearch()
+    {
+        return myTitle.equals(search_tag);
+    }
 
     public void launchDetail(final NewsData _input, final int _id)
     {
@@ -92,6 +97,7 @@ public class NewsList extends Fragment {
             public void accept(Boolean aBoolean) throws Exception {
                 if(aBoolean){
                     String content=NewsDatabase.getInstance().findContent(_input.getId());
+                    NewsDatabase.getInstance().refreshOfflineView();
                     myAdapter.notifyItemChanged(_id);
                     Intent intent=new Intent(getActivity(),NewsDetail.class);
                     intent.putExtra("TITLE",_input.getTitle());
@@ -160,7 +166,7 @@ public class NewsList extends Fragment {
                 if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastItemShown==myAdapter.getItemCount()-1)
                 {
                     if(!myAdapter.getIsRefreshing()) {
-                        if(!myAdapter.isIsfreeze()||isOffline()) {
+                        if(!myAdapter.isIsfreeze()||isOffline()||isSearch()) {
                             myAdapter.setIsRefreshing(true);
                             append();
                         }
@@ -175,6 +181,10 @@ public class NewsList extends Fragment {
                 //Log.d("Scroll Action Created",Integer.valueOf(lastItemShown).toString());
             }
         });
+        if(isOffline())
+        {
+            NewsDatabase.getInstance().setOfflineView(this);
+        }
         mySwipeRefresh.setRefreshing(true);
         refresh();
         return root;
@@ -187,6 +197,7 @@ public class NewsList extends Fragment {
         curChunk=1;
         if(curPage>5)curPage-=5;
         if(isOffline())curPage=1;
+        if(isSearch())curPage=1;
         refreshNews(curPage).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
@@ -211,12 +222,13 @@ public class NewsList extends Fragment {
     {
         curChunk+=5;
         if(isOffline())curChunk-=4;
+        if(isSearch())curChunk-=4;
         refreshNews(curChunk).subscribe(new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) throws Exception {
                 if(aBoolean.equals(Boolean.FALSE))
                 {
-                    Toast.makeText(getContext(),"无法获取更多",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"暂时无法获取更多",Toast.LENGTH_SHORT).show();
                     myAdapter.setFreeze(true);
                 }
                 else {
