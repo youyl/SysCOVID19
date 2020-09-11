@@ -75,8 +75,9 @@ public class NewsDatabase
                         String source=newsObj.getString("source");
                         String date=newsObj.getString("date");
                         String newscontent=newsObj.getString("content");
+                        String urlll=newsObj.getString("url");
                         cachedNews.add(id);
-                        cachedData.add(new NewsData(title,date,source,id,newsType));
+                        cachedData.add(new NewsData(title,date,source,id,newsType,urlll));
                         cachedDataDetail.add(newscontent);
                     }
                 }
@@ -126,6 +127,7 @@ public class NewsDatabase
                 smallObj.put("source",cachedData.get(i).getSource());
                 smallObj.put("type",cachedData.get(i).getType());
                 smallObj.put("date",cachedData.get(i).getDate());
+                smallObj.put("url",cachedData.get(i).getUrl());
                 smallObj.put("content",cachedDataDetail.get(i));
                 dataarray.put(i,smallObj);
             }
