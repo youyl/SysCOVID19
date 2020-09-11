@@ -23,6 +23,8 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+import io.reactivex.Single;
+
 public class MenuActivity extends AppCompatActivity {
     private int startCat;
     private int currentCat;
@@ -66,7 +68,9 @@ public class MenuActivity extends AppCompatActivity {
         private MyAdaptor oppo;
         private Context context;
         private AlphaAnimation fading_in;
-        //private AlphaAnimation fading_out;
+        private AlphaAnimation fading_out;
+        private boolean is_fading_out;
+        private boolean is_fading_in;
         private int isCreateProcess;
         private int catVal;
         private ArrayList<NewsCategory> catlist=new ArrayList<NewsCategory>();
@@ -90,10 +94,45 @@ public class MenuActivity extends AppCompatActivity {
 
         MyAdaptor(Context _context)
         {
+            is_fading_out=false;
+            is_fading_in=false;
             isCreateProcess=-1;
             context=_context;
             fading_in=(AlphaAnimation)AnimationUtils.loadAnimation(context,R.anim.fading_in_anime);
-            //fading_out=(AlphaAnimation)AnimationUtils.loadAnimation(context,R.anim.fading_out_anime);
+            fading_out=(AlphaAnimation)AnimationUtils.loadAnimation(context,R.anim.fading_out_anime);
+            fading_in.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    is_fading_in=true;
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    is_fading_in=false;
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    //do nothing
+                }
+            });
+            fading_out.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    is_fading_out=true;
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    notifyDataSetChanged();
+                    is_fading_out=false;
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                    //do nothing
+                }
+            });
         }
 
         public void addItem(NewsCategory _news)
@@ -108,7 +147,7 @@ public class MenuActivity extends AppCompatActivity {
         {
             catVal-=(catlist.get(x).getIdx()-1);
             catlist.remove(x);
-            this.notifyDataSetChanged();
+            //this.notifyDataSetChanged();
         }
 
         @Override
@@ -139,6 +178,9 @@ public class MenuActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if(is_fading_out)return;
+                    if(is_fading_in)return;
+                    text.startAnimation(fading_out);
                     oppo.addItem(catlist.get(i));
                     eraseItem(i);
                 }
